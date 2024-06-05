@@ -1,15 +1,9 @@
 #root {
-  /* max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center; */
   display: grid;
-  height: calc(100dvh - 15px);
+  height: calc(100dvh - 25px);
   width: calc(100dvw - 30px);
-  padding-top: 10px;
-  padding-bottom: 5px;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding: 10px 15px 15px;
+  overflow-y: overlay;
 }
 
 .logo {

@@ -13,22 +13,22 @@ function App() {
     const { data } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
       if (!session) {
-        setRealSession(null)
+        setRealSession(null);
       }
-    })
+    });
     return () => {
-      data.subscription.unsubscribe()
-    }
-  }, [])
+      data.subscription.unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     if (!realSession && session) {
-      setRealSession(session)
+      setRealSession(session);
     }
-    if (session && session?.access_token !== realSession?.access_token) {
-      setRealSession(session)
+    if (realSession && session && session?.access_token !== realSession?.access_token) {
+      setRealSession(session);
     }
-  }, [session, realSession])
+  }, [session, realSession]);
 
   return (
     <>{ !realSession ? 
@@ -36,7 +36,7 @@ function App() {
     :
       <Home key={realSession.user.id} session={realSession} />
     }</>
-  )
+  );
 }
 
-export default App
+export default App;

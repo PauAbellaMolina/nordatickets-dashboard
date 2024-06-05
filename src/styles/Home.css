@@ -31,12 +31,22 @@
   border: none;
   font-size: 30px;
   font-weight: bold;
-  padding: 0;
+  padding: 0 30px 0 0;
   margin: 0;
   cursor: pointer;
+  max-width: 85dvw;
+  z-index: 1;
 }
 .eventSelect:focus {
   outline: none;
+}
+
+.chevronDown {
+  font-size: 30px;
+  filter: invert(1);
+  position: relative;
+  transform: translate(-26px, 4px);
+  z-index: -10;
 }
 
 .eventList {
@@ -48,4 +58,16 @@
   color: grey;
   margin-top: 50px;
   font-style: italic;
+}
+
+.signOutButton {
+  width: max-content;
+  border-radius: 10px;
+  padding: 0.5em 1em;
+}
+
+@media (prefers-color-scheme: light) {
+  .chevronDown {
+    filter: invert(0);
+  }
 }

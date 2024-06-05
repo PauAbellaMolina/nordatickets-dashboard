@@ -350,6 +350,12 @@ export type Database = {
         }
         Returns: string
       }
+      email_is_admin: {
+        Args: {
+          email_to_check: string
+        }
+        Returns: boolean
+      }
       insert_secret: {
         Args: {
           name: string

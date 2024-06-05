@@ -1,8 +1,7 @@
 .eventStatsContainer {
   display: flex;
   flex-direction: column;
-  background-color: black;
-  color: white;
+  background-color: transparent;
   width: 100%;
   height: 100%;
   gap: 20px;
@@ -26,14 +25,14 @@
 .box {
   max-width: 250px;
   width: 100%;
-  border: 1px solid white;
+  border: 2px solid #8C90A3;
   padding: 10px 15px;
   display: flex;
   flex-direction: column;
   cursor: pointer;
   border-radius: 10px;
   font-size: 2em;
-  transition: background-color 0.3s ease;
+  transition: background-color .2s ease;
 }
 
 .subtitle {
@@ -43,18 +42,21 @@
 }
 
 .number {
-  /* font-size: 1.5em; */
   font-weight: bold;
   white-space: nowrap;
   overflow-x: auto;
 }
 
-.box:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+.box:hover:not(.noHover) {
+  background-color: rgba(255, 255, 255, .07);
 }
 
-/* .chartContainer {
-  height: 200px;
-  border: 1px solid white;
-  border-radius: 10px;
-} */
+@media (prefers-color-scheme: light) {
+  .eventStatsContainer {
+    background-color: #ffffff;
+  }
+
+  .box:hover:not(.noHover) {
+    background-color: rgba(0, 0, 0, .06);
+  }
+}

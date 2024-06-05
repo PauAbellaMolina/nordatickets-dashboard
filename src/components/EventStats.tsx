@@ -8,6 +8,7 @@ import { Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts'
 interface BoxProps {
   number: number | null;
   subtitle: string;
+  selectable: boolean;
   onClick: () => void;
   styles: React.CSSProperties;
 }
@@ -18,8 +19,8 @@ type DataStructure = {
   data: Partial<WalletTicket>[] | number | null;
 }[];
 
-const Box: React.FC<BoxProps> = ({ number, subtitle, onClick, styles }) => (
-  <div className="box" onClick={onClick} style={styles}>
+const Box: React.FC<BoxProps> = ({ number, subtitle, selectable, onClick, styles }) => (
+  <div className={"box " + (!selectable ? 'noHover' : '')} onClick={selectable ? onClick : undefined} style={styles}>
     <div className="subtitle">{subtitle}</div>
     <div className="number">{ number != null ? number : <ActivityIndicator/> }</div>
   </div>
@@ -44,7 +45,7 @@ export default function EventStats({ event }: { event: Event | undefined }) {
     setCombinedStats(data[1]);
   };
 
-  useEffect(() => { //TODO PAU this is running twice, fix it
+  useEffect(() => {
     if (!event) return;
     let unmounted = false;
 
@@ -63,14 +64,49 @@ export default function EventStats({ event }: { event: Event | undefined }) {
     }
   };
 
+  const isSelectable = (key: string) => {
+    switch (key) {
+      case 'sold':
+        return true;
+      case 'used':
+        return true;
+      case 'following':
+        return false;
+      default:
+        return false;
+    }
+  };
+
+  const getBoxSelectedBackgroundColor = (key: string) => {
+    switch (key) {
+      case 'sold':
+        return 'rgba(136, 132, 216, 0.18)';
+      case 'used':
+        return 'rgba(130, 202, 157, 0.18)';
+      default:
+        return 'rgba(140, 144, 163, 0.18)';
+    }
+  };
+
+  const getBoxSelectedColor = (key: string) => {
+    switch (key) {
+      case 'sold':
+        return 'rgba(136, 132, 216, 1)';
+      case 'used':
+        return 'rgba(130, 202, 157, 1)';
+      default:
+        return 'fieldtext';
+    }
+  };
+
   return (
     <div className="eventStatsContainer">
       <div className="boxContainer">
         { !stats || !stats?.length ? 
           <ActivityIndicator />
         : <>
-          {stats.map(({ subtitle, data }, index) => (
-            <Box number={typeof data === 'number' ? data : data?.length ?? 0} subtitle={subtitle} onClick={() => handleSelectedStat(index)} key={index} styles={{ backgroundColor: selectedStats.includes(index) ? 'rgba(140, 144, 163, 0.18)' : '' }} />
+          {stats.map(({ key, subtitle, data }, index) => (
+            <Box number={typeof data === 'number' ? data : 0} subtitle={subtitle} selectable={isSelectable(key)} onClick={() => handleSelectedStat(index)} key={index} styles={{ backgroundColor: selectedStats.includes(index) ? getBoxSelectedBackgroundColor(key) : '', borderColor: selectedStats.includes(index) ? getBoxSelectedColor(key) : '#8C90A3' }} />
           ))}
         </> }
       </div>

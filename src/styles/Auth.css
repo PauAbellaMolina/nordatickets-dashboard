@@ -7,9 +7,10 @@
   align-items: center;
   justify-content: center;
   gap: 20px;
-  max-width: 500px;
-  width: 100%;
+  max-width: 80dvw;
+  width: 460px;
   background-color: #9C9C9C33;
+  padding: 30px 20px 35px;
 }
 
 .title {
@@ -26,6 +27,8 @@
 
 .email {
   font-size: 25px;
+  max-width: 300px;
+  overflow-x: overlay;
 }
 
 .emailSubmitted {
@@ -47,11 +50,12 @@
 
 .input {
   border-radius: 15px;
-  border: 1px solid;
+  border: 1px solid #FCFCFC33;
   padding: 10px 20px;
   font-size: 20px;
   text-align: center;
-  max-width: 300px;
+  width: 258px;
+  max-width: 80%;
 }
 
 .inputErrorMessage {
@@ -74,6 +78,11 @@
   color: #202228;
 }
 
+.editPencil {
+  filter: invert(1);
+  width: 19px;
+}
+
 .bottomActionContainer {
   position: absolute;
   bottom: 50px;
@@ -88,4 +97,17 @@
   text-decoration: underline;
   text-align: center;
   margin-top: 6px;
+}
+
+@media (prefers-color-scheme: light) {
+  .wrapper {
+    background-color: #9C9C9C40;
+  }
+  .input {
+    border-color: #20222833
+  }
+
+  .editPencil {
+    filter: invert(0);
+  }
 }
