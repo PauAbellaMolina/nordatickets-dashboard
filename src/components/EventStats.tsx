@@ -67,14 +67,12 @@ export default function EventStats({ event }: { event: Event | undefined }) {
     }
     const groupByTimeFrame = (tickets: WalletTicket[], key: 'created_at' | 'used_at', timeFrame: number) => {
       return tickets.reduce((acc, ticket) => {
-        if (ticket[key] != null) {
-          const date = new Date(ticket[key]);
-          date.setMinutes(Math.floor(date.getMinutes() / timeFrame) * timeFrame);
-          date.setSeconds(0);
-          date.setMilliseconds(0);
-          const dateKey = date.toISOString();
-          acc[dateKey] = (acc[dateKey] || 0) + 1;
-        }
+        const date = new Date(ticket[key] ?? '');
+        date.setMinutes(Math.floor(date.getMinutes() / timeFrame) * timeFrame);
+        date.setSeconds(0);
+        date.setMilliseconds(0);
+        const dateKey = date.toISOString();
+        acc[dateKey] = (acc[dateKey] || 0) + 1;
         return acc;
       }, {} as Record<string, number>);
     };
