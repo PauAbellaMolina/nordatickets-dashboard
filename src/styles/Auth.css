@@ -1,0 +1,91 @@
+.wrapper {
+  border-radius: 50px;
+  display: flex;
+  flex-flow: column;
+  align-self: center;
+  justify-self: center;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  max-width: 500px;
+  width: 100%;
+  background-color: #9C9C9C33;
+}
+
+.title {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.explanation {
+  font-size: 18px;
+  text-align: center;
+  max-width: 300px;
+  opacity: 0.8;
+}
+
+.email {
+  font-size: 25px;
+}
+
+.emailSubmitted {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  max-width: 250px;
+}
+
+.inputContainer {
+  margin-top: 20px;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  width: 100%;
+  gap: 15px;
+}
+
+.input {
+  border-radius: 15px;
+  border: 1px solid;
+  padding: 10px 20px;
+  font-size: 20px;
+  text-align: center;
+  max-width: 300px;
+}
+
+.inputErrorMessage {
+  color: #ff3737;
+  height: 20px;
+}
+
+.button {
+  border-radius: 15px;
+  padding: 11px 25px;
+  width: 100%;
+  max-width: 300px;
+  background-color: #FCFCFC;
+}
+
+.buttonText {
+  font-weight: 500;
+  font-size: 18px;
+  text-align: center;
+  color: #202228;
+}
+
+.bottomActionContainer {
+  position: absolute;
+  bottom: 50px;
+}
+
+.bottomActionTitle {
+  font-size: 16px;
+}
+
+.bottomActionLink {
+  font-size: 14px;
+  text-decoration: underline;
+  text-align: center;
+  margin-top: 6px;
+}

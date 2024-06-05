@@ -1,0 +1,51 @@
+.homeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: inherit;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.title {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.infoLabel {
+  font-size: 13px;
+  margin-left: 2px;
+  color: #8C90A3;
+}
+
+.eventSelect {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: transparent;
+  border: none;
+  font-size: 30px;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.eventSelect:focus {
+  outline: none;
+}
+
+.eventList {
+  gap: 10px;
+}
+
+.emptyList {
+  text-align: center;
+  color: grey;
+  margin-top: 50px;
+  font-style: italic;
+}
