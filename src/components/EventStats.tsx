@@ -21,7 +21,7 @@ type DataStructure = {
 const Box: React.FC<BoxProps> = ({ number, subtitle, onClick, styles }) => (
   <div className="box" onClick={onClick} style={styles}>
     <div className="subtitle">{subtitle}</div>
-    <div className="number">{ number ? number : <ActivityIndicator/> }</div>
+    <div className="number">{ number != null ? number : <ActivityIndicator/> }</div>
   </div>
 );
 
@@ -34,130 +34,26 @@ export default function EventStats({ event }: { event: Event | undefined }) {
     { key: 'following', subtitle: 'Usuaris seguint l\'esdeveniment', data: null },
   ]);
 
+  const getStats = async (eventId: number, unmounted: boolean) => {
+    const { data, error } = await supabase.functions.invoke('get-sold-tickets-stat', {
+      body: { eventId: eventId },
+    });
+    if (error || unmounted) return;
+
+    setStats(data[0]);
+    setCombinedStats(data[1]);
+  };
+
   useEffect(() => { //TODO PAU this is running twice, fix it
     if (!event) return;
     let unmounted = false;
-    supabase.from('wallet_tickets').select('order_id, used_at, created_at').eq('event_id', event.id) //TODO PAU make this a rpc function
-    .then(({ data: wallet_tickets, error }) => {
-      if (unmounted || error) return;
-      setStats(prevStats => prevStats.map(stat => stat.key === 'used' ? { ...stat, data: wallet_tickets?.filter(ticket => ticket.used_at !== null) ?? [] } : stat));
 
-      supabase.from('redsys_orders').select('order_id').eq('event_id', event.id).eq('order_status', 'PAYMENT_SUCCEDED') //TODO PAU make this a rpc function
-      .then(({ data: orders, error }) => {
-        if (unmounted || error) return;
-        const validWalletTickets = wallet_tickets?.filter(ticket => orders.some(order => order.order_id === ticket.order_id));
-        setStats(prevStats => prevStats.map(stat => stat.key === 'sold' ? { ...stat, data: validWalletTickets ?? [] } : stat));
-      });
-    });
-
-    supabase.rpc('count_users_following_event', { event_id: event.id })
-    .then(({ data: count, error }) => {
-      if (unmounted || error) return;
-      setStats(prevStats => prevStats.map(stat => stat.key === 'following' ? { ...stat, data: count ?? 0 } : stat));
-    });
+    getStats(event.id, unmounted);
 
     return () => {
       unmounted = true;
     };
   }, [event]);
-
-  useEffect(() => {
-    if (stats.some(stat => stat.data === null)) {
-      return;
-    }
-    const groupByTimeFrame = (tickets: WalletTicket[], key: 'created_at' | 'used_at', timeFrame: number) => {
-      return tickets.reduce((acc, ticket) => {
-        const date = new Date(ticket[key] ?? '');
-        date.setMinutes(Math.floor(date.getMinutes() / timeFrame) * timeFrame);
-        date.setSeconds(0);
-        date.setMilliseconds(0);
-        const dateKey = date.toISOString();
-        acc[dateKey] = (acc[dateKey] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>);
-    };
-
-    const soldData = stats.find(stat => stat.key === 'sold')?.data;
-    const startDate = new Date(Math.min(...(Array.isArray(soldData) ? soldData : [])?.map(ticket => new Date(ticket.created_at ?? '').getTime()) ?? []));
-    const endDate = new Date();
-
-    const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
-    const diffHours = diffTime / (1000 * 60 * 60); // convert difference to hours
-
-    
-    let timeFrame;
-    if (diffHours < 0.5) {
-      timeFrame = 1; // 5 minutes
-    } else if (diffHours < 1) {
-      timeFrame = 5; // 5 minutes
-    } else if (diffHours < 3) {
-      timeFrame = 15; // 15 minutes
-    } else if (diffHours < 10) {
-      timeFrame = 30; // 30 minutes
-    } else if (diffHours < 72) {
-      timeFrame = 60; // 1 hour
-    } else if (diffHours < 168) {
-      timeFrame = 300; // 5 hours
-    } else if (diffHours < 720) {
-      timeFrame = 1440; // 1 day
-    } else {
-      timeFrame = 10080; // 1 week
-    }
-
-    const soldStats = groupByTimeFrame(stats.find(stat => stat.key === 'sold')?.data as WalletTicket[], 'created_at', timeFrame);
-    const usedStats = groupByTimeFrame(stats.find(stat => stat.key === 'used')?.data as WalletTicket[], 'used_at', timeFrame);
-
-    const combinedStats = [];
-    let totalSold = 0;
-    let totalUsed = 0;
-    let prevDate: Date | undefined;
-
-    for (let date = startDate; date <= endDate; date.setMinutes(date.getMinutes() + timeFrame)) {
-      const dateKey = new Date(date);
-      dateKey.setMinutes(Math.floor(date.getMinutes() / timeFrame) * timeFrame);
-      dateKey.setSeconds(0);
-      dateKey.setMilliseconds(0);
-      const dateKeyString = dateKey.toISOString();
-      const dateKeyStringFormatted = formatDate(dateKey, prevDate);
-      prevDate = dateKey;
-
-      const sold = soldStats[dateKeyString] || 0;
-      totalSold += sold;
-
-      const used = usedStats[dateKeyString] || 0;
-      totalUsed += used;
-
-      combinedStats.push({
-        name: dateKeyString,
-        formattedName: dateKeyStringFormatted,
-        sold: totalSold,
-        used: totalUsed,
-      });
-    }
-
-    setCombinedStats(combinedStats);
-  }, [stats]);
-
-  const formatDate = (date: Date, prevDate?: Date) => {
-    let options: Intl.DateTimeFormatOptions = {
-      hour: '2-digit',
-      minute: '2-digit'
-    };
-    if (!prevDate || prevDate.getDate() !== date.getDate() || prevDate.getMonth() !== date.getMonth()) {
-      options = {
-        ...options,
-        day: '2-digit',
-        month: '2-digit'
-      };
-    }
-    if (!prevDate || prevDate.getFullYear() !== date.getFullYear()) {
-      options = {
-        ...options,
-        year: 'numeric'
-      };
-    }
-    return new Intl.DateTimeFormat(undefined, options).format(date);
-  }
 
   const handleSelectedStat = (index: number) => {
     if (selectedStats.includes(index)) {

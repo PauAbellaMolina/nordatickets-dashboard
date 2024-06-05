@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "gen-sb-types": "supabase gen types typescript --linked > types/supabase.ts"
+    "gen-sb-types": "supabase gen types typescript --linked > types/supabase.ts",
+    "gen-sb-types-edge-functions": "supabase gen types typescript --linked > supabase/functions/_shared/types.ts"
   },
   "dependencies": {
     "react": "^18.2.0",
