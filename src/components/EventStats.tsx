@@ -1,7 +1,7 @@
 import '../styles/components/EventStats.css'
 import { useEffect, useState } from 'react'
 import { supabase } from '../../supabase'
-import { Event, WalletTicket } from '../../types/supabaseplain';
+import { Event } from '../../types/supabaseplain';
 import { ActivityIndicator } from './ActivityIndicator';
 import { Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts';
 
@@ -16,7 +16,7 @@ interface BoxProps {
 type DataStructure = {
   key: string;
   subtitle: string;
-  data: Partial<WalletTicket>[] | number | null;
+  data: number | null;
 }[];
 
 const Box: React.FC<BoxProps> = ({ number, subtitle, selectable, onClick, styles }) => (
@@ -34,6 +34,7 @@ export default function EventStats({ event }: { event: Event | undefined }) {
     { key: 'used', subtitle: 'Tickets utilitzats', data: null },
     { key: 'following', subtitle: 'Usuaris seguint l\'esdeveniment', data: null },
   ]);
+  const [higherStat, setHigherStat] = useState<number>(0);
 
   const getStats = async (eventId: number, unmounted: boolean) => {
     const { data, error } = await supabase.functions.invoke('get-sold-tickets-stat', {
@@ -44,6 +45,10 @@ export default function EventStats({ event }: { event: Event | undefined }) {
     setStats(data[0]);
     setCombinedStats(data[1]);
   };
+
+  useEffect(() => {
+    setHigherStat(Math.max(...stats.map(stat => stat.data ?? 0)));
+  }, [stats]);
 
   useEffect(() => {
     if (!event) return;
@@ -95,7 +100,7 @@ export default function EventStats({ event }: { event: Event | undefined }) {
       case 'used':
         return 'rgba(130, 202, 157, 1)';
       default:
-        return 'fieldtext';
+        return 'text';
     }
   };
 
@@ -112,8 +117,8 @@ export default function EventStats({ event }: { event: Event | undefined }) {
       </div>
       <div className="chartContainer">
         { combinedStats.length ? <>
-          <h2 className="chartTitle">Stats</h2>
-          <AreaChart width={730} height={500} data={combinedStats}>
+          {/* <h2 className="chartTitle">Stats</h2> */}
+          <AreaChart width={800} height={500} data={combinedStats}>
             <defs>
               <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
@@ -124,8 +129,8 @@ export default function EventStats({ event }: { event: Event | undefined }) {
                 <stop offset="95%" stopColor="#82ca9d" stopOpacity={0}/>
               </linearGradient>
             </defs>
-            <XAxis dataKey="formattedName" angle={-45} textAnchor="end" tick={{ fontSize: 13 }} tickMargin={5} height={100} />
-            <YAxis tickMargin={3} width={80} />
+            <XAxis dataKey="formattedName" angle={-60} textAnchor="end" tick={{ fontSize: 13 }} tickMargin={5} height={100} />
+            <YAxis tickMargin={3} width={higherStat?.toString()?.length * 13 < 30 ? 30 : higherStat?.toString()?.length * 13} />
             <CartesianGrid strokeDasharray="3 3" opacity={.5} />
             <Tooltip labelStyle={{ color: 'black' }} />
             <Area type="monotone" dataKey={selectedStats.includes(0) ? 'sold' : ''} stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />

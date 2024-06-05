@@ -153,12 +153,13 @@ const formatDate = (date: Date, prevDate?: Date) => {
       month: '2-digit'
     };
   }
-  if (!prevDate || prevDate.getFullYear() !== date.getFullYear()) {
-    options = {
-      ...options,
-      year: 'numeric'
-    };
-  }
+  //Code to show year in the date
+  // if (!prevDate || prevDate.getFullYear() !== date.getFullYear()) {
+  //   options = {
+  //     ...options,
+  //     year: 'numeric'
+  //   };
+  // }
   return new Intl.DateTimeFormat('es-ES', options).format(date);
 }
 

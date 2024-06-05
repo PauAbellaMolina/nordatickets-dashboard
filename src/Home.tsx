@@ -59,7 +59,7 @@ export default function Home({ session }: { session: Session }) {
           { events.length > 1 ? <>
             <select className="eventSelect" value={selectedEvent?.id} onChange={handleSelectChange}>
               {events.map((event, index) => (
-                <option key={index} value={event.id}>{event.name}asdasdasds</option>
+                <option key={index} value={event.id}>{event.name}</option>
               ))}
             </select>
             <img src={ChevronDown} alt="chevron down" className="chevronDown" />

@@ -5,13 +5,14 @@
   font-weight: 500;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  /* color: rgba(255, 255, 255, 0.87); */
   background-color: #000000;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior-y: none;
 }
 
 a {
@@ -39,7 +40,9 @@ h1 {
 p {
   margin: 0;
 }
-
+select {
+  color: text;
+}
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -48,6 +51,7 @@ button {
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
+  color: text;
   cursor: pointer;
   transition: border-color 0.25s;
 }

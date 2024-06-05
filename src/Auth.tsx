@@ -100,6 +100,7 @@ export default function Auth() {
         { !emailSent ?
           <input
             type="email"
+            inputMode="email"
             className="input"
             placeholder="Correu electrònic"
             onChange={(e) => setEmail(e.target.value)}
@@ -111,6 +112,7 @@ export default function Auth() {
           </div>
           <input
             type="number"
+            inputMode="numeric"
             className="input"
             placeholder="Codi d'un sol ús"
             onChange={(e) => setOneTimeCode(e.target.value)}
