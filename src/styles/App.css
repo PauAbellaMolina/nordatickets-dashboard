@@ -4,7 +4,7 @@
   padding: 2rem;
   text-align: center; */
   display: grid;
-  height: 100dvh;
+  height: calc(100dvh - 15px);
   width: calc(100dvw - 30px);
   padding-top: 10px;
   padding-bottom: 5px;

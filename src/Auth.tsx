@@ -21,28 +21,37 @@ export default function Auth() {
   const onEmailLogIn = () => {
     setEmailErrorMessage(undefined);
     setLoading(true);
-    
-    //One time password (OTP)
-    // const langMetaData = authEmailsTranslations[i18n.locale as AvailableLocales];
-    supabase.auth.signInWithOtp({
-      email: email,
-      options: {
-        shouldCreateUser: false,
-        // data: langMetaData
+
+    supabase.rpc('organizer_email_exists', { email_to_check: email })
+    .then(({ data: exists, error }) => {
+      if (error || !exists) {
+        setEmailErrorMessage('tryAgain');
+        setLoading(false);
+        return;
       }
-    })
-    .then(() => {
-      setEmailSent(true);
-    })
-    .catch(() => {
-      setEmailSent(false);
-      // setEmailErrorMessage(i18n?.t('tryAgain'));
-      setEmailErrorMessage('tryAgain');
-    })
-    .finally(() => {
-      //TODO PAU show email sent message
-      setLoading(false);
+      //One time password (OTP)
+      // const langMetaData = authEmailsTranslations[i18n.locale as AvailableLocales];
+      supabase.auth.signInWithOtp({
+        email: email,
+        options: {
+          shouldCreateUser: false,
+          // data: langMetaData
+        }
+      })
+      .then(() => {
+        setEmailSent(true);
+      })
+      .catch(() => {
+        setEmailSent(false);
+        // setEmailErrorMessage(i18n?.t('tryAgain'));
+        setEmailErrorMessage('tryAgain');
+      })
+      .finally(() => {
+        //TODO PAU show email sent message
+        setLoading(false);
+      });
     });
+    
   };
 
   const onChangeEmail = () => {

@@ -16,6 +16,12 @@
   scrollbar-width: thin;
   scrollbar-color: #888 #444;
 }
+.chartContainer {
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #444;
+}
 
 .box {
   max-width: 250px;
@@ -40,16 +46,15 @@
   /* font-size: 1.5em; */
   font-weight: bold;
   white-space: nowrap;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 .box:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.chartContainer {
+/* .chartContainer {
   height: 200px;
   border: 1px solid white;
-  /* margin: 20px 0; */
   border-radius: 10px;
-}
+} */

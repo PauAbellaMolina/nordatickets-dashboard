@@ -356,6 +356,12 @@ export type Database = {
         }
         Returns: number
       }
+      organizer_email_exists: {
+        Args: {
+          email_to_check: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
