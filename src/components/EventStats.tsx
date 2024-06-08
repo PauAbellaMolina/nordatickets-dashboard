@@ -4,11 +4,11 @@ import { supabase } from '../../supabase'
 import { Event } from '../../types/supabaseplain';
 import { ActivityIndicator } from './ActivityIndicator';
 import { Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts';
+import useWindowDimensions from '../utils/useWindowDimensions';
 
 interface BoxProps {
   number: number | null;
   subtitle: string;
-  selectable: boolean;
   onClick: () => void;
   styles: React.CSSProperties;
 }
@@ -19,15 +19,15 @@ type DataStructure = {
   data: number | null;
 }[];
 
-const Box: React.FC<BoxProps> = ({ number, subtitle, selectable, onClick, styles }) => (
-  <div className={"box " + (!selectable ? 'noHover' : '')} onClick={selectable ? onClick : undefined} style={styles}>
+const Box: React.FC<BoxProps> = ({ number, subtitle, onClick, styles }) => (
+  <div className={"box"} onClick={onClick} style={styles}>
     <div className="subtitle">{subtitle}</div>
     <div className="number">{ number != null ? number : <ActivityIndicator/> }</div>
   </div>
 );
 
 export default function EventStats({ event }: { event: Event | undefined }) {
-  const [combinedStats, setCombinedStats] = useState<{ name: string, sold: number, used: number }[]>([]);
+  const [chartStats, setChartStats] = useState<{ name: string, sold: number, used: number }[]>([]);
   const [selectedStats, setSelectedStats] = useState<number[]>([0, 1]);
   const [stats, setStats] = useState<DataStructure>([
     { key: 'sold', subtitle: 'Tickets venuts', data: null },
@@ -36,6 +36,8 @@ export default function EventStats({ event }: { event: Event | undefined }) {
   ]);
   const [higherStat, setHigherStat] = useState<number>(0);
 
+  const {  width } = useWindowDimensions();
+
   const getStats = async (eventId: number, unmounted: boolean) => {
     const { data, error } = await supabase.functions.invoke('get-sold-tickets-stat', {
       body: { eventId: eventId },
@@ -43,7 +45,7 @@ export default function EventStats({ event }: { event: Event | undefined }) {
     if (error || unmounted) return;
 
     setStats(data[0]);
-    setCombinedStats(data[1]);
+    setChartStats(data[1]);
   };
 
   useEffect(() => {
@@ -66,19 +68,6 @@ export default function EventStats({ event }: { event: Event | undefined }) {
       setSelectedStats(selectedStats.filter(boxIndex => boxIndex !== index));
     } else {
       setSelectedStats([...selectedStats, index]);
-    }
-  };
-
-  const isSelectable = (key: string) => {
-    switch (key) {
-      case 'sold':
-        return true;
-      case 'used':
-        return true;
-      case 'following':
-        return false;
-      default:
-        return false;
     }
   };
 
@@ -106,19 +95,19 @@ export default function EventStats({ event }: { event: Event | undefined }) {
 
   return (
     <div className="eventStatsContainer">
+      <p className="usersFollowingStat">{stats.find(({ key }) => key === 'following')?.subtitle}: <b>{stats.find(({ key }) => key === 'following')?.data}</b></p>
       <div className="boxContainer">
         { !stats || !stats?.length ? 
           <ActivityIndicator />
         : <>
           {stats.map(({ key, subtitle, data }, index) => (
-            <Box number={typeof data === 'number' ? data : 0} subtitle={subtitle} selectable={isSelectable(key)} onClick={() => handleSelectedStat(index)} key={index} styles={{ backgroundColor: selectedStats.includes(index) ? getBoxSelectedBackgroundColor(key) : '', borderColor: selectedStats.includes(index) ? getBoxSelectedColor(key) : '#8C90A3' }} />
+            key !== 'following' ? <Box number={typeof data === 'number' ? data : 0} subtitle={subtitle} onClick={() => handleSelectedStat(index)} key={index} styles={{ backgroundColor: selectedStats.includes(index) ? getBoxSelectedBackgroundColor(key) : '', borderColor: selectedStats.includes(index) ? getBoxSelectedColor(key) : '#8C90A3' }} /> : null
           ))}
         </> }
       </div>
       <div className="chartContainer">
-        { combinedStats.length ? <>
-          {/* <h2 className="chartTitle">Stats</h2> */}
-          <AreaChart width={800} height={500} data={combinedStats}>
+        { chartStats.length ? <>
+          <AreaChart width={width-30} height={500} data={chartStats}>
             <defs>
               <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>

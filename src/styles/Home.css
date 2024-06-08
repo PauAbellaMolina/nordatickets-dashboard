@@ -1,7 +1,6 @@
 .homeContainer {
   display: flex;
   flex-direction: column;
-  gap: 30px;
   width: inherit;
 }
 
@@ -15,12 +14,6 @@
 .title {
   font-size: 30px;
   font-weight: bold;
-}
-
-.infoLabel {
-  font-size: 13px;
-  margin-left: 2px;
-  color: #8C90A3;
 }
 
 .eventSelect {
@@ -70,5 +63,11 @@
 @media (prefers-color-scheme: light) {
   .chevronDown {
     filter: invert(0);
+  }
+}
+
+@media (max-width: 576px) {
+  .eventSelect {
+    max-width: 80dvw;
   }
 }

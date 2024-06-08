@@ -63,10 +63,8 @@ export default function Home({ session }: { session: Session }) {
               ))}
             </select>
             <img src={ChevronDown} alt="chevron down" className="chevronDown" />
-            <p className="infoLabel">Tria un dels esdeveniments per veure els detalls</p>
           </> : <>
             <h1 className="title">{events[0]?.name}</h1>
-            <p className="infoLabel">Detalls de l'esdeveniment</p>
           </>}
         </div>
         <EventStats event={events.find(event => event.id === selectedEvent?.id)} />  
