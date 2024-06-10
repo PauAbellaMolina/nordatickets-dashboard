@@ -1,13 +1,16 @@
-import '../styles/components/EventStats.css'
-import { useEffect, useState } from 'react'
-import { supabase } from '../../supabase'
+import '../styles/components/EventStats.css';
+import { useEffect, useState } from 'react';
+import { supabase } from '../../supabase';
 import { Event } from '../../types/supabaseplain';
 import { ActivityIndicator } from './ActivityIndicator';
 import { Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts';
 import useWindowDimensions from '../utils/useWindowDimensions';
+import { useLanguageProvider } from '../utils/LanguageProvider';
+import { I18n } from 'i18n-js';
 
 interface BoxProps {
   number: number | null;
+  i18n: I18n | null;
   subtitle: string;
   onClick: () => void;
   styles: React.CSSProperties;
@@ -19,21 +22,19 @@ type DataStructure = {
   data: number | null;
 }[];
 
-const Box: React.FC<BoxProps> = ({ number, subtitle, onClick, styles }) => (
+const Box: React.FC<BoxProps> = ({ number, i18n, subtitle, onClick, styles }) => (
   <div className={"box"} onClick={onClick} style={styles}>
-    <div className="subtitle">{subtitle}</div>
+    <div className="subtitle">{ i18n?.t(subtitle) }</div>
     <div className="number">{ number != null ? number : <ActivityIndicator/> }</div>
   </div>
 );
 
 export default function EventStats({ event }: { event: Event | undefined }) {
+  const { i18n } = useLanguageProvider();
+  
   const [chartStats, setChartStats] = useState<{ name: string, sold: number, used: number }[]>([]);
   const [selectedStats, setSelectedStats] = useState<number[]>([0, 1]);
-  const [stats, setStats] = useState<DataStructure>([
-    { key: 'sold', subtitle: 'Tickets venuts', data: null },
-    { key: 'used', subtitle: 'Tickets utilitzats', data: null },
-    { key: 'following', subtitle: 'Usuaris seguint l\'esdeveniment', data: null },
-  ]);
+  const [stats, setStats] = useState<DataStructure>([]);
   const [higherStat, setHigherStat] = useState<number>(0);
 
   const {  width } = useWindowDimensions();
@@ -93,15 +94,20 @@ export default function EventStats({ event }: { event: Event | undefined }) {
     }
   };
 
+  const findFollowingStat = () => {
+    return stats.find(({ key }) => key === 'following');
+  };
+  const followingStat = findFollowingStat();
+
   return (
     <div className="eventStatsContainer">
-      <p className="usersFollowingStat">{stats.find(({ key }) => key === 'following')?.subtitle}: <b>{stats.find(({ key }) => key === 'following')?.data}</b></p>
+      <p className="usersFollowingStat">{ followingStat ? i18n?.t(followingStat.subtitle) : 'Usuaris seguint l\'esdeveniment' }: <b>{ stats.find(({ key }) => key === 'following')?.data }</b></p>
       <div className="boxContainer">
         { !stats || !stats?.length ? 
           <ActivityIndicator />
         : <>
           {stats.map(({ key, subtitle, data }, index) => (
-            key !== 'following' ? <Box number={typeof data === 'number' ? data : 0} subtitle={subtitle} onClick={() => handleSelectedStat(index)} key={index} styles={{ backgroundColor: selectedStats.includes(index) ? getBoxSelectedBackgroundColor(key) : '', borderColor: selectedStats.includes(index) ? getBoxSelectedColor(key) : '#8C90A3' }} /> : null
+            key !== 'following' ? <Box number={typeof data === 'number' ? data : 0} i18n={i18n} subtitle={subtitle} onClick={() => handleSelectedStat(index)} key={index} styles={{ backgroundColor: selectedStats.includes(index) ? getBoxSelectedBackgroundColor(key) : '', borderColor: selectedStats.includes(index) ? getBoxSelectedColor(key) : '#8C90A3' }} /> : null
           ))}
         </> }
       </div>

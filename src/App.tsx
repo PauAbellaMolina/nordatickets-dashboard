@@ -1,9 +1,10 @@
-import './styles/App.css'
-import { Session } from '@supabase/supabase-js'
-import { useState, useEffect } from 'react'
-import { supabase } from '../supabase'
-import Auth from './Auth'
-import Home from './Home'
+import './styles/App.css';
+import { Session } from '@supabase/supabase-js';
+import { useState, useEffect } from 'react';
+import { supabase } from '../supabase';
+import Auth from './Auth';
+import Home from './Home';
+import { LanguageProvider } from './utils/LanguageProvider';
 
 function App() {
   const [session, setSession] = useState<Session | null>(null)
@@ -31,11 +32,13 @@ function App() {
   }, [session, realSession]);
 
   return (
-    <>{ !realSession ? 
-      <Auth />
-    :
-      <Home key={realSession.user.id} session={realSession} />
-    }</>
+    <LanguageProvider>
+      { !realSession ? 
+        <Auth />
+      :
+        <Home key={realSession.user.id} session={realSession} />
+      }
+    </LanguageProvider>
   );
 }
 

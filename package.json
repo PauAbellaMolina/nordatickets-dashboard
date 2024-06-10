@@ -12,6 +12,7 @@
     "gen-sb-types-edge-functions": "supabase gen types typescript --linked > supabase/functions/_shared/types.ts"
   },
   "dependencies": {
+    "i18n-js": "^4.4.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "recharts": "^2.12.7"

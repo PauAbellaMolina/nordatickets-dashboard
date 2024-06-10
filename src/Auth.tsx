@@ -1,10 +1,15 @@
-import './styles/Auth.css'
-import { useEffect, useState } from 'react'
-import { supabase } from '../supabase'
+import './styles/Auth.css';
+import { useEffect, useState } from 'react';
+import { supabase } from '../supabase';
 import EditPencil from './assets/edit-2.svg';
 import { ActivityIndicator } from './components/ActivityIndicator';
+import { useLanguageProvider } from './utils/LanguageProvider';
+import { authEmailsTranslations } from './utils/translations/email';
+import { AvailableLocales } from './utils/translations/translation';
 
 export default function Auth() {
+  const { i18n } = useLanguageProvider();
+  
   const [email, setEmail] = useState<string>('');
   const [emailSent, setEmailSent] = useState<boolean>(false);
   const [emailErrorMessage, setEmailErrorMessage] = useState<string | undefined>(undefined);
@@ -47,12 +52,12 @@ export default function Auth() {
 
   const sendEmail = () => {
     //One time password (OTP)
-    // const langMetaData = authEmailsTranslations[i18n.locale as AvailableLocales];
+    const langMetaData = authEmailsTranslations[i18n?.locale as AvailableLocales];
     supabase.auth.signInWithOtp({
       email: email,
       options: {
         shouldCreateUser: false,
-        // data: langMetaData
+        data: langMetaData
       }
     })
     .then(() => {
@@ -60,8 +65,7 @@ export default function Auth() {
     })
     .catch(() => {
       setEmailSent(false);
-      // setEmailErrorMessage(i18n?.t('tryAgain'));
-      setEmailErrorMessage('tryAgain');
+      setEmailErrorMessage(i18n?.t('tryAgain'));
     })
     .finally(() => {
       //TODO PAU show email sent message
@@ -84,8 +88,7 @@ export default function Auth() {
       type: 'email'
     })
     .catch(() => {
-      // setEmailErrorMessage(i18n?.t('tryAgain'));
-      setEmailErrorMessage('tryAgain');
+      setEmailErrorMessage(i18n?.t('tryAgain'));
     })
     .finally(() => {
       setLoading(false);
@@ -94,15 +97,15 @@ export default function Auth() {
 
   return (
     <div className="wrapper">
-      <h1 className="title">Iniciar sessió</h1>
-      <p className="explanation">T'enviarem un codi de 6 dígits al correu electrònic</p>
+      <h1 className="title">{ i18n?.t('logIn') }</h1>
+      <p className="explanation">{ i18n?.t('emailCodeExplanation') }</p>
       <div className="inputContainer">
         { !emailSent ?
           <input
             type="email"
             inputMode="email"
             className="input"
-            placeholder="Correu electrònic"
+            placeholder={ i18n?.t('email') }
             onChange={(e) => setEmail(e.target.value)}
           />
         : <>
@@ -114,7 +117,7 @@ export default function Auth() {
             type="number"
             inputMode="numeric"
             className="input"
-            placeholder="Codi d'un sol ús"
+            placeholder={ i18n?.t('oneTimeCode') }
             onChange={(e) => setOneTimeCode(e.target.value)}
           />
         </>}
@@ -134,7 +137,7 @@ export default function Auth() {
                   className="button"
                   onClick={onEmailLogIn}
                 >
-                  <span className="buttonText">Enviar</span>
+                  <span className="buttonText">{ i18n?.t('send') }</span>
                 </button>
               :
                 <button
@@ -142,7 +145,7 @@ export default function Auth() {
                   className="button"
                   onClick={onCodeSubmit}
                 >
-                  <span className="buttonText">Entrar</span>
+                  <span className="buttonText">{ i18n?.t('enter') }</span>
                 </button>
               }
             </>

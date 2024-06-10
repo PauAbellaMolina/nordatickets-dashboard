@@ -27,9 +27,9 @@ Deno.serve(async (req) => {
     let usedData: Partial<WalletTicket>[] = [];
     let soldData: Partial<WalletTicket>[] = [];
     let statsCounts: StatsCounts = ([
-      { key: 'sold', subtitle: 'Tickets venuts', data: null },
-      { key: 'used', subtitle: 'Tickets utilitzats', data: null },
-      { key: 'following', subtitle: 'Usuaris seguint l\'esdeveniment', data: null },
+      { key: 'sold', subtitle: 'ticketsSold', data: null },
+      { key: 'used', subtitle: 'ticketsUsed', data: null },
+      { key: 'following', subtitle: 'usersFollowingEvent', data: null },
     ]);
 
     let graphStats: { name: string, sold: number, used: number }[] = [];

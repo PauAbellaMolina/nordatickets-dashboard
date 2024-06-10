@@ -6,11 +6,20 @@ import { Session } from '@supabase/supabase-js';
 import { ActivityIndicator } from './components/ActivityIndicator';
 import EventStats from './components/EventStats';
 import ChevronDown from './assets/chevron-down.svg';
+import { useLanguageProvider } from './utils/LanguageProvider';
+import { AvailableLocales } from './utils/translations/translation';
 
 export default function Home({ session }: { session: Session }) {
+  const { i18n, setLanguage } = useLanguageProvider();
+  
   const { user } = session;
   const [events, setEvents] = useState<Event[] | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<{ id: number, name: string } | null>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState<AvailableLocales>();
+
+  useEffect(() => {
+    setSelectedLanguage(i18n?.locale as AvailableLocales);
+  }, [i18n]);
 
   useEffect(() => {
     if (!user || !user?.email) return;
@@ -50,6 +59,13 @@ export default function Home({ session }: { session: Session }) {
     setSelectedEvent({ id: +e.target.value || 0, name: events?.find(event => event.id === +e.target.value)?.name ?? '' });
   };
 
+  const onSelectedLanguage = (e: ChangeEvent<HTMLSelectElement>) => {
+    if (!i18n) return;
+    const language = e.target.value as AvailableLocales;
+    setSelectedLanguage(language);
+    setLanguage(language);
+  };
+
   return (
     <div className="homeContainer">
       { !events ?
@@ -69,7 +85,12 @@ export default function Home({ session }: { session: Session }) {
         </div>
         <EventStats event={events.find(event => event.id === selectedEvent?.id)} />  
       </> }
-      <button className="signOutButton" onClick={() => supabase.auth.signOut()}>Tancar sessió</button>
+      <select className="langSelect" value={selectedLanguage} onChange={(e: ChangeEvent<HTMLSelectElement>) => onSelectedLanguage(e)}>
+        <option value="ca">Català</option>
+        <option value="es">Castellano</option>
+        <option value="en">English</option>
+      </select>
+      <button className="signOutButton" onClick={() => supabase.auth.signOut()}>{ i18n?.t('logOut') }</button>
     </div>
   );
 }
