@@ -46,6 +46,7 @@ export default function EventStats({ event }: { event: Event | undefined }) {
     if (error || unmounted) return;
 
     setStats(data[0]);
+    
     setChartStats(data[1]);
   };
 
@@ -125,7 +126,7 @@ export default function EventStats({ event }: { event: Event | undefined }) {
               </linearGradient>
             </defs>
             <XAxis dataKey="formattedName" angle={-60} textAnchor="end" tick={{ fontSize: 13 }} tickMargin={5} height={100} />
-            <YAxis tickMargin={3} width={higherStat?.toString()?.length * 13 < 30 ? 30 : higherStat?.toString()?.length * 13} />
+            <YAxis tickMargin={3} width={higherStat?.toString()?.length * 13 < 30 ? 35 : higherStat?.toString()?.length * 13} />
             <CartesianGrid strokeDasharray="3 3" opacity={.5} />
             <Tooltip labelStyle={{ color: 'black' }} />
             <Area type="monotone" dataKey={selectedStats.includes(0) ? 'sold' : ''} stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
