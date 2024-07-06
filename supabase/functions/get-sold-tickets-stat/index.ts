@@ -144,7 +144,8 @@ const groupByTimeFrame = (walletTickets: Partial<WalletTicket>[], key: 'created_
 const formatDate = (date: Date, prevDate?: Date) => {
   let options: Intl.DateTimeFormatOptions = {
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
+    timeZone: 'Europe/Madrid'
   };
   if (!prevDate || prevDate.getDate() !== date.getDate() || prevDate.getMonth() !== date.getMonth()) {
     options = {

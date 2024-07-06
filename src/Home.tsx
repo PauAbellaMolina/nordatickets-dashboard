@@ -37,15 +37,11 @@ export default function Home({ session }: { session: Session }) {
         });
       } else {
         if (!user.email) return;
-        supabase.from('organizers').select().eq('email', user.email).single()
-        .then(({ data: organizer, error }) => {
-          if (unmounted || error || !user || !organizer) return;
-          supabase.from('events').select().eq('organizer_id', organizer.id)
-          .then(({ data: events, error }) => {
-            if (unmounted || error || !user || !events.length) return;
-            setEvents(events);
-            setSelectedEvent({ id: events[0].id, name: events[0].name ?? '' });
-          });
+        supabase.from('events').select().eq('organizer_email', user.email)
+        .then(({ data: events, error }) => {
+          if (unmounted || error || !user || !events.length) return;
+          setEvents(events);
+          setSelectedEvent({ id: events[0].id, name: events[0].name ?? '' });
         });
       }
     });

@@ -42,9 +42,11 @@ export type Database = {
           event_id: number | null
           id: number
           iva: number
+          minor_restricted: boolean
           name: string | null
           price: number | null
           selling: boolean | null
+          type: Database["public"]["Enums"]["event_ticket_type"] | null
         }
         Insert: {
           color_code_dark?: string | null
@@ -53,9 +55,11 @@ export type Database = {
           event_id?: number | null
           id?: number
           iva?: number
+          minor_restricted?: boolean
           name?: string | null
           price?: number | null
           selling?: boolean | null
+          type?: Database["public"]["Enums"]["event_ticket_type"] | null
         }
         Update: {
           color_code_dark?: string | null
@@ -64,9 +68,11 @@ export type Database = {
           event_id?: number | null
           id?: number
           iva?: number
+          minor_restricted?: boolean
           name?: string | null
           price?: number | null
           selling?: boolean | null
+          type?: Database["public"]["Enums"]["event_ticket_type"] | null
         }
         Relationships: [
           {
@@ -87,7 +93,7 @@ export type Database = {
           id: number
           more_info_content: string | null
           name: string | null
-          organizer_id: number | null
+          organizer_email: string | null
           selling: boolean | null
           ticket_fee: number | null
         }
@@ -99,7 +105,7 @@ export type Database = {
           id?: number
           more_info_content?: string | null
           name?: string | null
-          organizer_id?: number | null
+          organizer_email?: string | null
           selling?: boolean | null
           ticket_fee?: number | null
         }
@@ -111,19 +117,11 @@ export type Database = {
           id?: number
           more_info_content?: string | null
           name?: string | null
-          organizer_id?: number | null
+          organizer_email?: string | null
           selling?: boolean | null
           ticket_fee?: number | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "events_organizer_id_fkey"
-            columns: ["organizer_id"]
-            isOneToOne: false
-            referencedRelation: "organizers"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       faqs: {
         Row: {
@@ -199,7 +197,9 @@ export type Database = {
           event_id: number | null
           id: number
           order_id: string | null
-          order_status: string | null
+          order_status:
+            | Database["public"]["Enums"]["redsys_order_status"]
+            | null
           user_id: string | null
         }
         Insert: {
@@ -209,7 +209,9 @@ export type Database = {
           event_id?: number | null
           id?: number
           order_id?: string | null
-          order_status?: string | null
+          order_status?:
+            | Database["public"]["Enums"]["redsys_order_status"]
+            | null
           user_id?: string | null
         }
         Update: {
@@ -219,7 +221,9 @@ export type Database = {
           event_id?: number | null
           id?: number
           order_id?: string | null
-          order_status?: string | null
+          order_status?:
+            | Database["public"]["Enums"]["redsys_order_status"]
+            | null
           user_id?: string | null
         }
         Relationships: [
@@ -281,7 +285,9 @@ export type Database = {
           iva: number
           order_id: string | null
           price: number | null
+          type: Database["public"]["Enums"]["event_ticket_type"] | null
           used_at: string | null
+          used_with_addon_id: number | null
           user_id: string | null
         }
         Insert: {
@@ -293,7 +299,9 @@ export type Database = {
           iva?: number
           order_id?: string | null
           price?: number | null
+          type?: Database["public"]["Enums"]["event_ticket_type"] | null
           used_at?: string | null
+          used_with_addon_id?: number | null
           user_id?: string | null
         }
         Update: {
@@ -305,7 +313,9 @@ export type Database = {
           iva?: number
           order_id?: string | null
           price?: number | null
+          type?: Database["public"]["Enums"]["event_ticket_type"] | null
           used_at?: string | null
+          used_with_addon_id?: number | null
           user_id?: string | null
         }
         Relationships: [
@@ -377,7 +387,11 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      event_ticket_type: "ADDON" | "ADDON_REFUNDABLE"
+      redsys_order_status:
+        | "PAYMENT_PENDING"
+        | "PAYMENT_SUCCEEDED"
+        | "PAYMENT_FAILED"
     }
     CompositeTypes: {
       [_ in never]: never

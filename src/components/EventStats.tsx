@@ -41,7 +41,7 @@ export default function EventStats({ event }: { event: Event | undefined }) {
 
   const getStats = async (eventId: number, unmounted: boolean) => {
     const { data, error } = await supabase.functions.invoke('get-sold-tickets-stat', {
-      body: { eventId: eventId },
+      body: { eventId: eventId }
     });
     if (error || unmounted) return;
 
