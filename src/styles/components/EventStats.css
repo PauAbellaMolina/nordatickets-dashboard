@@ -43,17 +43,16 @@
   flex-direction: column;
   cursor: pointer;
   border-radius: 10px;
-  font-size: 2em;
   transition: background-color .2s ease;
 }
 
 .subtitle {
-  font-size: 0.5em;
   white-space: nowrap;
   max-width: 235px;
 }
 
 .number {
+  font-size: 2em;
   font-weight: bold;
   white-space: nowrap;
   overflow-x: auto;

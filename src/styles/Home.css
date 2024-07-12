@@ -4,16 +4,20 @@
   width: inherit;
 }
 
-.header {
-  display: flex;
+.headerContainer {
+  display: grid;
+  grid-auto-flow: column;
   justify-content: space-between;
-  align-items: center;
-  margin-right: 10px;
 }
 
 .title {
   font-size: 30px;
   font-weight: bold;
+}
+
+.headerSelectContainer {
+  display: flex;
+  flex-wrap: nowrap;
 }
 
 .eventSelect {
@@ -40,6 +44,12 @@
   position: relative;
   transform: translate(-26px, 4px);
   z-index: -10;
+}
+
+.settings {
+  font-size: 30px;
+  filter: invert(1);
+  position: relative;
 }
 
 .eventList {

@@ -1,0 +1,68 @@
+.eventConfigContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  gap: 20px;
+}
+
+.activityIndicator {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.configBoxContainer {
+  display: grid;
+  gap: 5px;
+}
+
+.configBox {
+  border: 2px solid #8C90A3;
+  padding: 10px 15px;
+  display: grid;
+  grid-auto-flow: column;
+  gap: 10px;
+  flex-direction: row;
+  justify-content: space-between;
+  border-radius: 10px;
+}
+
+.configBoxTitleContainer {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.sellingStatusDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.sellingStatusDot.green {
+  background-color: green;
+}
+.sellingStatusDot.red {
+  background-color: red;
+}
+
+.title {
+  font-size: 1em;
+  white-space: nowrap;
+  overflow-x: scroll;
+}
+
+.action {
+  font-size: 1em;
+  text-decoration: underline;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+@media (prefers-color-scheme: light) {
+  .eventConfigContainer {
+    background-color: #ffffff;
+  }
+}

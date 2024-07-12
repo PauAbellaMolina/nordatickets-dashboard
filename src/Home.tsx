@@ -6,8 +6,11 @@ import { Session } from '@supabase/supabase-js';
 import { ActivityIndicator } from './components/ActivityIndicator';
 import EventStats from './components/EventStats';
 import ChevronDown from './assets/chevron-down.svg';
+import Settings from './assets/settings.svg';
+import BarChart from './assets/bar-chart.svg';
 import { useLanguageProvider } from './utils/LanguageProvider';
 import { AvailableLocales } from './utils/translations/translation';
+import EventConfig from './components/EventConfig';
 
 export default function Home({ session }: { session: Session }) {
   const { i18n, setLanguage } = useLanguageProvider();
@@ -16,6 +19,7 @@ export default function Home({ session }: { session: Session }) {
   const [events, setEvents] = useState<Event[] | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<{ id: number, name: string } | null>(null);
   const [selectedLanguage, setSelectedLanguage] = useState<AvailableLocales>();
+  const [configMode, setConfigMode] = useState<boolean>(false);
 
   useEffect(() => {
     setSelectedLanguage(i18n?.locale as AvailableLocales);
@@ -55,6 +59,10 @@ export default function Home({ session }: { session: Session }) {
     setSelectedEvent({ id: +e.target.value || 0, name: events?.find(event => event.id === +e.target.value)?.name ?? '' });
   };
 
+  const onClickSettings = () => {
+    setConfigMode(!configMode);
+  }
+
   const onSelectedLanguage = (e: ChangeEvent<HTMLSelectElement>) => {
     if (!i18n) return;
     const language = e.target.value as AvailableLocales;
@@ -67,19 +75,26 @@ export default function Home({ session }: { session: Session }) {
       { !events ?
         <ActivityIndicator />
       : <>
-        <div>
-          { events.length > 1 ? <>
-            <select className="eventSelect" value={selectedEvent?.id} onChange={handleSelectChange}>
-              {events.map((event, index) => (
-                <option key={index} value={event.id}>{event.name}</option>
-              ))}
-            </select>
-            <img src={ChevronDown} alt="chevron down" className="chevronDown" />
-          </> : <>
+        <div className="headerContainer">
+          { events.length > 1 ? 
+            <div className="headerSelectContainer">
+              <select className="eventSelect" value={selectedEvent?.id} onChange={handleSelectChange}>
+                {events.map((event, index) => (
+                  <option key={index} value={event.id}>{event.name}</option>
+                ))}
+              </select>
+              <img src={ChevronDown} alt="chevron down" className="chevronDown" />
+            </div>
+          :
             <h1 className="title">{events[0]?.name}</h1>
-          </>}
+          }
+          <img src={!configMode ? Settings : BarChart} alt="settings" className="settings" onClick={onClickSettings} />
         </div>
-        <EventStats event={events.find(event => event.id === selectedEvent?.id)} />  
+        { configMode ?
+          <EventConfig event={events.find(event => event.id === selectedEvent?.id)} />
+        :
+          <EventStats event={events.find(event => event.id === selectedEvent?.id)} />
+        }
       </> }
       <select className="langSelect" value={selectedLanguage} onChange={(e: ChangeEvent<HTMLSelectElement>) => onSelectedLanguage(e)}>
         <option value="ca">Català</option>

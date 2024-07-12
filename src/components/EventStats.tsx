@@ -23,7 +23,7 @@ type DataStructure = {
 }[];
 
 const Box: React.FC<BoxProps> = ({ number, i18n, subtitle, onClick, styles }) => (
-  <div className={"box"} onClick={onClick} style={styles}>
+  <div className="box" onClick={onClick} style={styles}>
     <div className="subtitle">{ i18n?.t(subtitle) }</div>
     <div className="number">{ number != null ? number : <ActivityIndicator/> }</div>
   </div>
@@ -39,17 +39,6 @@ export default function EventStats({ event }: { event: Event | undefined }) {
 
   const {  width } = useWindowDimensions();
 
-  const getStats = async (eventId: number, unmounted: boolean) => {
-    const { data, error } = await supabase.functions.invoke('get-sold-tickets-stat', {
-      body: { eventId: eventId }
-    });
-    if (error || unmounted) return;
-
-    setStats(data[0]);
-    
-    setChartStats(data[1]);
-  };
-
   useEffect(() => {
     setHigherStat(Math.max(...stats.map(stat => stat.data ?? 0)));
   }, [stats]);
@@ -64,6 +53,17 @@ export default function EventStats({ event }: { event: Event | undefined }) {
       unmounted = true;
     };
   }, [event]);
+
+  const getStats = async (eventId: number, unmounted: boolean) => {
+    const { data, error } = await supabase.functions.invoke('get-sold-tickets-stat', {
+      body: { eventId: eventId }
+    });
+    if (error || unmounted) return;
+
+    setStats(data[0]);
+    
+    setChartStats(data[1]);
+  };
 
   const handleSelectedStat = (index: number) => {
     if (selectedStats.includes(index)) {

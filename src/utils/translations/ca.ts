@@ -12,5 +12,10 @@ export const ca: { [key: string]: string } = {
   usersFollowingEvent: 'Usuaris seguint l\'esdeveniment',
   yourOneTimeCode: "El teu codi per un sol ús",
   yourOneTimeCodeGreeting: "Hola! Aquest és el teu codi d'un sol ús:",
-  yourOneTimeCodeExplanation: "Utilitza'l per iniciar sessió a ElTeuTikt"
+  yourOneTimeCodeExplanation: "Utilitza'l per iniciar sessió a ElTeuTikt",
+  deactivateSelling: 'Desactivar venda',
+  activateSelling: 'Activar venda',
+  eventConfiguration: 'Configuració de l\'esdeveniment',
+  generalSelling: 'Venda general',
+  accessTickets: 'Entrades'
 };

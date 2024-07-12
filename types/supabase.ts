@@ -34,123 +34,7 @@ export type Database = {
   }
   public: {
     Tables: {
-      event_tickets: {
-        Row: {
-          color_code_dark: string | null
-          color_code_light: string | null
-          created_at: string
-          event_id: number | null
-          id: number
-          iva: number
-          minor_restricted: boolean
-          name: string | null
-          price: number | null
-          selling: boolean | null
-          type: Database["public"]["Enums"]["event_ticket_type"] | null
-        }
-        Insert: {
-          color_code_dark?: string | null
-          color_code_light?: string | null
-          created_at?: string
-          event_id?: number | null
-          id?: number
-          iva?: number
-          minor_restricted?: boolean
-          name?: string | null
-          price?: number | null
-          selling?: boolean | null
-          type?: Database["public"]["Enums"]["event_ticket_type"] | null
-        }
-        Update: {
-          color_code_dark?: string | null
-          color_code_light?: string | null
-          created_at?: string
-          event_id?: number | null
-          id?: number
-          iva?: number
-          minor_restricted?: boolean
-          name?: string | null
-          price?: number | null
-          selling?: boolean | null
-          type?: Database["public"]["Enums"]["event_ticket_type"] | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "event_tickets_event_id_fkey"
-            columns: ["event_id"]
-            isOneToOne: false
-            referencedRelation: "events"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      events: {
-        Row: {
-          color_code_dark: string | null
-          color_code_light: string | null
-          created_at: string
-          description: string | null
-          id: number
-          more_info_content: string | null
-          name: string | null
-          organizer_email: string | null
-          selling: boolean | null
-          ticket_fee: number | null
-        }
-        Insert: {
-          color_code_dark?: string | null
-          color_code_light?: string | null
-          created_at?: string
-          description?: string | null
-          id?: number
-          more_info_content?: string | null
-          name?: string | null
-          organizer_email?: string | null
-          selling?: boolean | null
-          ticket_fee?: number | null
-        }
-        Update: {
-          color_code_dark?: string | null
-          color_code_light?: string | null
-          created_at?: string
-          description?: string | null
-          id?: number
-          more_info_content?: string | null
-          name?: string | null
-          organizer_email?: string | null
-          selling?: boolean | null
-          ticket_fee?: number | null
-        }
-        Relationships: []
-      }
-      faqs: {
-        Row: {
-          answer: string | null
-          created_at: string
-          id: number
-          language: string
-          order: number
-          question: string | null
-        }
-        Insert: {
-          answer?: string | null
-          created_at?: string
-          id?: number
-          language?: string
-          order: number
-          question?: string | null
-        }
-        Update: {
-          answer?: string | null
-          created_at?: string
-          id?: number
-          language?: string
-          order?: number
-          question?: string | null
-        }
-        Relationships: []
-      }
-      organizers: {
+      _organizers: {
         Row: {
           address: string | null
           cif: string | null
@@ -186,6 +70,128 @@ export type Database = {
           nif?: string | null
           phone?: string | null
           zipcode_city_country?: string | null
+        }
+        Relationships: []
+      }
+      event_tickets: {
+        Row: {
+          buy_includes_event_tickets_ids: number[] | null
+          color_code_dark: string | null
+          color_code_light: string | null
+          created_at: string
+          event_id: number | null
+          id: number
+          iva: number
+          minor_restricted: boolean
+          name: string | null
+          price: number | null
+          selling: boolean
+          type: Database["public"]["Enums"]["event_ticket_type"]
+        }
+        Insert: {
+          buy_includes_event_tickets_ids?: number[] | null
+          color_code_dark?: string | null
+          color_code_light?: string | null
+          created_at?: string
+          event_id?: number | null
+          id?: number
+          iva?: number
+          minor_restricted?: boolean
+          name?: string | null
+          price?: number | null
+          selling?: boolean
+          type?: Database["public"]["Enums"]["event_ticket_type"]
+        }
+        Update: {
+          buy_includes_event_tickets_ids?: number[] | null
+          color_code_dark?: string | null
+          color_code_light?: string | null
+          created_at?: string
+          event_id?: number | null
+          id?: number
+          iva?: number
+          minor_restricted?: boolean
+          name?: string | null
+          price?: number | null
+          selling?: boolean
+          type?: Database["public"]["Enums"]["event_ticket_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_tickets_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          color_code_dark: string | null
+          color_code_light: string | null
+          created_at: string
+          description: string | null
+          id: number
+          more_info_content: string | null
+          name: string | null
+          organizer_email: string | null
+          selling: boolean
+          selling_access: boolean
+          ticket_fee: number | null
+        }
+        Insert: {
+          color_code_dark?: string | null
+          color_code_light?: string | null
+          created_at?: string
+          description?: string | null
+          id?: number
+          more_info_content?: string | null
+          name?: string | null
+          organizer_email?: string | null
+          selling?: boolean
+          selling_access?: boolean
+          ticket_fee?: number | null
+        }
+        Update: {
+          color_code_dark?: string | null
+          color_code_light?: string | null
+          created_at?: string
+          description?: string | null
+          id?: number
+          more_info_content?: string | null
+          name?: string | null
+          organizer_email?: string | null
+          selling?: boolean
+          selling_access?: boolean
+          ticket_fee?: number | null
+        }
+        Relationships: []
+      }
+      faqs: {
+        Row: {
+          answer: string | null
+          created_at: string
+          id: number
+          language: string
+          order: number
+          question: string | null
+        }
+        Insert: {
+          answer?: string | null
+          created_at?: string
+          id?: number
+          language?: string
+          order: number
+          question?: string | null
+        }
+        Update: {
+          answer?: string | null
+          created_at?: string
+          id?: number
+          language?: string
+          order?: number
+          question?: string | null
         }
         Relationships: []
       }
@@ -285,7 +291,7 @@ export type Database = {
           iva: number
           order_id: string | null
           price: number | null
-          type: Database["public"]["Enums"]["event_ticket_type"] | null
+          type: Database["public"]["Enums"]["event_ticket_type"]
           used_at: string | null
           used_with_addon_id: number | null
           user_id: string | null
@@ -299,7 +305,7 @@ export type Database = {
           iva?: number
           order_id?: string | null
           price?: number | null
-          type?: Database["public"]["Enums"]["event_ticket_type"] | null
+          type?: Database["public"]["Enums"]["event_ticket_type"]
           used_at?: string | null
           used_with_addon_id?: number | null
           user_id?: string | null
@@ -313,7 +319,7 @@ export type Database = {
           iva?: number
           order_id?: string | null
           price?: number | null
-          type?: Database["public"]["Enums"]["event_ticket_type"] | null
+          type?: Database["public"]["Enums"]["event_ticket_type"]
           used_at?: string | null
           used_with_addon_id?: number | null
           user_id?: string | null
@@ -387,7 +393,7 @@ export type Database = {
       }
     }
     Enums: {
-      event_ticket_type: "ADDON" | "ADDON_REFUNDABLE"
+      event_ticket_type: "CONSUMABLE" | "ADDON" | "ADDON_REFUNDABLE" | "ACCESS"
       redsys_order_status:
         | "PAYMENT_PENDING"
         | "PAYMENT_SUCCEEDED"
