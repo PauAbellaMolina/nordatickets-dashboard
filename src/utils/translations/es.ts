@@ -16,6 +16,6 @@ export const es: { [key: string]: string } = {
   deactivateSelling: 'Desactivar venta',
   activateSelling: 'Activar venta',
   eventConfiguration: 'Configuración del evento',
-  generalSelling: 'Venta general',
-  accessTickets: 'Entradas'
+  generalSelling: 'Todos los tickets de consumición',
+  accessTickets: 'Todos los tickets de entrada'
 };

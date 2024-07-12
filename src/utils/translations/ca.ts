@@ -16,6 +16,6 @@ export const ca: { [key: string]: string } = {
   deactivateSelling: 'Desactivar venda',
   activateSelling: 'Activar venda',
   eventConfiguration: 'Configuració de l\'esdeveniment',
-  generalSelling: 'Venda general',
-  accessTickets: 'Entrades'
+  generalSelling: 'Tots els tickets de consumició',
+  accessTickets: 'Tots els tickets d\'entrada'
 };
