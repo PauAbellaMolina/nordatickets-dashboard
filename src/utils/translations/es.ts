@@ -10,12 +10,16 @@ export const es: { [key: string]: string } = {
   ticketsSold: 'Tickets vendidos',
   ticketsUsed: 'Tickets utilizados',
   usersFollowingEvent: 'Usuarios siguiendo el evento',
-  yourOneTimeCode: 'Tu codigo de un solo uso',
+  yourOneTimeCode: 'Tu código de un solo uso',
   yourOneTimeCodeGreeting: '¡Hola! Este es tu código de un solo uso:',
   yourOneTimeCodeExplanation: 'Usa este código para iniciar sesión en ElTeuTikt',
   deactivateSelling: 'Desactivar venta',
   activateSelling: 'Activar venta',
   eventConfiguration: 'Configuración del evento',
-  generalSelling: 'Todos los tickets de consumición',
-  accessTickets: 'Todos los tickets de entrada'
+  generalSelling: 'Venta general',
+  accessTickets: 'Tickets de entrada',
+  deactivateGeneralTicketConfirmationQuestion: '¿Estás seguro de que quieres desactivar la venta de TODOS los tickets?',
+  deactivateGeneralAccessTicketConfirmationQuestion: '¿Estás seguro de que quieres desactivar la venta de TODOS los tickets de entrada?',
+  deactivateAccessTicketConfirmationQuestion: '¿Estás seguro de que quieres desactivar la venta de este ticket de entrada?',
+  deactivateTicketConfirmationQuestion: '¿Estás seguro de que quieres desactivar la venta de este ticket?'
 };

@@ -16,6 +16,10 @@ export const ca: { [key: string]: string } = {
   deactivateSelling: 'Desactivar venda',
   activateSelling: 'Activar venda',
   eventConfiguration: 'Configuració de l\'esdeveniment',
-  generalSelling: 'Tots els tickets de consumició',
-  accessTickets: 'Tots els tickets d\'entrada'
+  generalSelling: 'Venda general',
+  accessTickets: 'Tickets d\'entrada',
+  deactivateGeneralTicketConfirmationQuestion: 'Estàs segur que vols desactivar la venda de TOTS els tickets?',
+  deactivateGeneralAccessTicketConfirmationQuestion: 'Estàs segur que vols desactivar la venda de TOTS els tickets d\'entrada?',
+  deactivateAccessTicketConfirmationQuestion: 'Estàs segur que vols desactivar la venda d\'aquest ticket d\'entrada?',
+  deactivateTicketConfirmationQuestion: 'Estàs segur que vols desactivar la venda d\'aquest ticket?'
 };

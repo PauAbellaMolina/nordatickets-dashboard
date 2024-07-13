@@ -13,13 +13,20 @@
   justify-content: center;
 }
 
+.configSubtitle {
+  font-size: 13px;
+  margin-left: 2px;
+  margin-bottom: 5px;
+  color: #8C90A3;
+}
+
 .configBoxContainer {
   display: grid;
   gap: 5px;
 }
 
 .configBox {
-  border: 2px solid #8C90A3;
+  border: 1px solid #8C90A3;
   padding: 10px 15px;
   display: grid;
   grid-auto-flow: column;

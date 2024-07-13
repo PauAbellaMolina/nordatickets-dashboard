@@ -64,7 +64,9 @@ export default function EventConfig({ event }: { event: Event | undefined }) {
   }, [event]);
 
   const handleGeneralTicketsSellingAction = () => {
-    if (!localEvent) return;
+    if (!window.confirm(i18n?.t('deactivateGeneralTicketConfirmationQuestion')) || !localEvent) {
+      return;
+    }
     supabase.from('events').update({ selling: !localEvent.selling }).eq('id', localEvent.id).select().single()
     .then(({ data: event, error }) => {
       if (error) return;
@@ -72,7 +74,9 @@ export default function EventConfig({ event }: { event: Event | undefined }) {
     });
   };
   const handleGeneralAccessSellingAction = () => {
-    if (!localEvent) return;
+    if (!window.confirm(i18n?.t('deactivateGeneralAccessTicketConfirmationQuestion')) || !localEvent) {
+      return;
+    }
     supabase.from('events').update({ selling_access: !localEvent.selling_access }).eq('id', localEvent.id).select().single()
     .then(({ data: event, error }) => {
       if (error) return;
@@ -81,6 +85,9 @@ export default function EventConfig({ event }: { event: Event | undefined }) {
   };
 
   const handleAccessSellingAction = (id: number, selling: boolean) => {
+    if (!window.confirm(i18n?.t('deactivateAccessTicketConfirmationQuestion'))) {
+      return;
+    }
     supabase.from('event_tickets').update({ selling: !selling }).eq('id', id).select().single()
     .then(({ data: event_ticket, error }) => {
       if (error) return;
@@ -89,6 +96,9 @@ export default function EventConfig({ event }: { event: Event | undefined }) {
   }
 
   const handleTicketsSellingAction = (id: number, selling: boolean) => {
+    if (!window.confirm(i18n?.t('deactivateTicketConfirmationQuestion'))) {
+      return;
+    }
     supabase.from('event_tickets').update({ selling: !selling }).eq('id', id).select().single()
     .then(({ data: event_ticket, error }) => {
       if (error) return;
@@ -98,11 +108,13 @@ export default function EventConfig({ event }: { event: Event | undefined }) {
 
   return (
     <div className="eventConfigContainer">
-      <h3>{ i18n?.t('eventConfiguration') }</h3>
+      <p className="configSubtitle">{ i18n?.t('eventConfiguration') }</p>
       <div className="configBoxContainer">
         <p>{ i18n?.t('generalSelling') }</p>
         <ConfigBox title="Tickets" selling={localEvent?.selling} i18n={i18n} onAction={() => handleGeneralTicketsSellingAction()} styles={{}} />
-        <ConfigBox title="Entrades" selling={localEvent?.selling_access} i18n={i18n} onAction={() => handleGeneralAccessSellingAction()} styles={{}} />
+        { accessEventTickets?.length ?
+          <ConfigBox title={i18n?.t('accessTickets') ?? ''} selling={localEvent?.selling_access} i18n={i18n} onAction={() => handleGeneralAccessSellingAction()} styles={{}} />
+        : null }
       </div>
       { accessEventTickets?.length ?
         <div className="configBoxContainer">

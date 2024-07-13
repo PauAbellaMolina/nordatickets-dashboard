@@ -16,6 +16,10 @@ export const en: { [key: string]: string } = {
   deactivateSelling: 'Deactivate selling',
   activateSelling: 'Activate selling',
   eventConfiguration: 'Event configuration',
-  generalSelling: 'All consumable tickets',
-  accessTickets: 'All access tickets'
+  generalSelling: 'General selling',
+  accessTickets: 'Access tickets',
+  deactivateGeneralTicketConfirmationQuestion: 'Are you sure you want to deactivate ALL tickets selling?',
+  deactivateGeneralAccessTicketConfirmationQuestion: 'Are you sure you want to deactivate ALL access tickets selling?',
+  deactivateAccessTicketConfirmationQuestion: 'Are you sure you want to deactivate this access ticket selling?',
+  deactivateTicketConfirmationQuestion: 'Are you sure you want to deactivate this ticket selling?'
 };
