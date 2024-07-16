@@ -4,23 +4,22 @@ import { supabase } from '../../supabase';
 import { Event, EventTicket } from '../../types/supabaseplain';
 import { ActivityIndicator } from './ActivityIndicator';
 import { useLanguageProvider } from '../utils/LanguageProvider';
-import { I18n } from 'i18n-js';
+import { Switch } from './Switch';
 
 interface ConfigBoxProps {
+  id: string;
   title: string;
   selling: boolean | null | undefined;
-  i18n: I18n | null;
   onAction: () => void;
-  styles: React.CSSProperties;
 }
 
-const ConfigBox: React.FC<ConfigBoxProps> = ({ title, selling, i18n, onAction, styles }) => (
-  <div className="configBox" style={styles}>
+const ConfigBox: React.FC<ConfigBoxProps> = ({ id, title, selling, onAction }) => (
+  <div className="configBox">
     <div className="configBoxTitleContainer">
       <div className={`sellingStatusDot ${selling ? 'green' : 'red'}`}></div>
       <div className="title">{ title }</div>
     </div>
-    <div className="action" onClick={onAction}>{ i18n?.t(selling ? 'deactivateSelling' : 'activateSelling') }</div>
+    <Switch id={id} checked={!!selling} handleCheck={onAction} />
   </div>
 );
 
@@ -64,8 +63,11 @@ export default function EventConfig({ event }: { event: Event | undefined }) {
   }, [event]);
 
   const handleGeneralTicketsSellingAction = () => {
-    if (!window.confirm(i18n?.t('deactivateGeneralTicketConfirmationQuestion')) || !localEvent) {
-      return;
+    if (!localEvent) return;
+    if (localEvent.selling) {
+      if (!window.confirm(i18n?.t('deactivateGeneralTicketConfirmationQuestion'))) {
+        return;
+      }
     }
     supabase.from('events').update({ selling: !localEvent.selling }).eq('id', localEvent.id).select().single()
     .then(({ data: event, error }) => {
@@ -74,8 +76,11 @@ export default function EventConfig({ event }: { event: Event | undefined }) {
     });
   };
   const handleGeneralAccessSellingAction = () => {
-    if (!window.confirm(i18n?.t('deactivateGeneralAccessTicketConfirmationQuestion')) || !localEvent) {
-      return;
+    if (!localEvent) return;
+    if (localEvent.selling) {
+      if (!window.confirm(i18n?.t('deactivateGeneralAccessTicketConfirmationQuestion'))) {
+        return;
+      }
     }
     supabase.from('events').update({ selling_access: !localEvent.selling_access }).eq('id', localEvent.id).select().single()
     .then(({ data: event, error }) => {
@@ -85,8 +90,10 @@ export default function EventConfig({ event }: { event: Event | undefined }) {
   };
 
   const handleAccessSellingAction = (id: number, selling: boolean) => {
-    if (!window.confirm(i18n?.t('deactivateAccessTicketConfirmationQuestion'))) {
-      return;
+    if (selling) {
+      if (!window.confirm(i18n?.t('deactivateAccessTicketConfirmationQuestion'))) {
+        return;
+      }
     }
     supabase.from('event_tickets').update({ selling: !selling }).eq('id', id).select().single()
     .then(({ data: event_ticket, error }) => {
@@ -96,8 +103,10 @@ export default function EventConfig({ event }: { event: Event | undefined }) {
   }
 
   const handleTicketsSellingAction = (id: number, selling: boolean) => {
-    if (!window.confirm(i18n?.t('deactivateTicketConfirmationQuestion'))) {
-      return;
+    if (selling) {
+      if (!window.confirm(i18n?.t('deactivateTicketConfirmationQuestion'))) {
+        return;
+      }
     }
     supabase.from('event_tickets').update({ selling: !selling }).eq('id', id).select().single()
     .then(({ data: event_ticket, error }) => {
@@ -111,16 +120,16 @@ export default function EventConfig({ event }: { event: Event | undefined }) {
       <p className="configSubtitle">{ i18n?.t('eventConfiguration') }</p>
       <div className="configBoxContainer">
         <p>{ i18n?.t('generalSelling') }</p>
-        <ConfigBox title="Tickets" selling={localEvent?.selling} i18n={i18n} onAction={() => handleGeneralTicketsSellingAction()} styles={{}} />
+        <ConfigBox id="generalSelling" title="Tickets" selling={localEvent?.selling} onAction={() => handleGeneralTicketsSellingAction()} />
         { accessEventTickets?.length ?
-          <ConfigBox title={i18n?.t('accessTickets') ?? ''} selling={localEvent?.selling_access} i18n={i18n} onAction={() => handleGeneralAccessSellingAction()} styles={{}} />
+          <ConfigBox id="generalAccess" title={i18n?.t('accessTickets') ?? ''} selling={localEvent?.selling_access} onAction={() => handleGeneralAccessSellingAction()} />
         : null }
       </div>
       { accessEventTickets?.length ?
         <div className="configBoxContainer">
           <p>{ i18n?.t('accessTickets') }:</p>
           {accessEventTickets.map(({ name, price, selling, id }, index) => (
-            <ConfigBox key={index} title={name + ' · ' + price + '€'} selling={selling} i18n={i18n} onAction={() => handleAccessSellingAction(id, selling)} styles={{marginBottom: 5}} />
+            <ConfigBox key={index} id={"general"+id} title={name + ' · ' + price + '€'} selling={selling} onAction={() => handleAccessSellingAction(id, selling)} />
           ))}
         </div>
       : null }
@@ -128,7 +137,7 @@ export default function EventConfig({ event }: { event: Event | undefined }) {
         <div className="configBoxContainer">
           <p>Tickets:</p>
           {eventTickets.map(({ name, price, selling, id }, index) => (
-            <ConfigBox key={index} title={name + ' · ' + price + '€'} selling={selling} i18n={i18n} onAction={() => handleTicketsSellingAction(id, selling)} styles={{marginBottom: 5}} />
+            <ConfigBox key={index} id={"access"+id} title={name + ' · ' + price + '€'} selling={selling} onAction={() => handleTicketsSellingAction(id, selling)} />
           ))}
         </div>
       : 
