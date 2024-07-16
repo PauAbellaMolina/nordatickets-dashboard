@@ -45,6 +45,10 @@ export default function EventStats({ event }: { event: Event | undefined }) {
 
   useEffect(() => {
     if (!event) return;
+    setChartStats([]);
+    setSelectedStats([0, 1]);
+    setStats([]);
+    setHigherStat(0);
     let unmounted = false;
 
     getStats(event.id, unmounted);
@@ -103,15 +107,17 @@ export default function EventStats({ event }: { event: Event | undefined }) {
   return (
     <div className="eventStatsContainer">
       <p className="usersFollowingStat">{ followingStat ? i18n?.t(followingStat.subtitle) : 'Usuaris seguint l\'esdeveniment' }: <b>{ stats.find(({ key }) => key === 'following')?.data }</b></p>
-      <div className="boxContainer">
-        { !stats || !stats?.length ? 
+      { !stats || !stats?.length ?  
+        <div style={{display: 'flex', justifyContent: 'center', marginTop: '15dvh'}}>
           <ActivityIndicator />
-        : <>
-          {stats.map(({ key, subtitle, data }, index) => (
-            key !== 'following' ? <Box number={typeof data === 'number' ? data : 0} i18n={i18n} subtitle={subtitle} onClick={() => handleSelectedStat(index)} key={index} styles={{ backgroundColor: selectedStats.includes(index) ? getBoxSelectedBackgroundColor(key) : '', borderColor: selectedStats.includes(index) ? getBoxSelectedColor(key) : '#8C90A3' }} /> : null
-          ))}
-        </> }
+        </div>
+      :
+      <div className="boxContainer">
+        {stats.map(({ key, subtitle, data }, index) => (
+          key !== 'following' ? <Box number={typeof data === 'number' ? data : 0} i18n={i18n} subtitle={subtitle} onClick={() => handleSelectedStat(index)} key={index} styles={{ backgroundColor: selectedStats.includes(index) ? getBoxSelectedBackgroundColor(key) : '', borderColor: selectedStats.includes(index) ? getBoxSelectedColor(key) : '#8C90A3' }} /> : null
+        ))}
       </div>
+      }
       <div className="chartContainer">
         { chartStats.length ? <>
           <AreaChart width={width-30} height={500} data={chartStats}>

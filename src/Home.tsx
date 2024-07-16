@@ -90,11 +90,12 @@ export default function Home({ session }: { session: Session }) {
           }
           <img src={!configMode ? Settings : BarChart} alt="settings" className="settings" onClick={onClickSettings} />
         </div>
-        { configMode ?
+        <div style={{height: '100%', display: configMode ? 'unset' : 'none'}}>
           <EventConfig event={events.find(event => event.id === selectedEvent?.id)} />
-        :
+        </div>
+        <div style={{height: '100%', display: configMode ? 'none' : 'unset'}}>
           <EventStats event={events.find(event => event.id === selectedEvent?.id)} />
-        }
+        </div>
       </> }
       <select className="langSelect" value={selectedLanguage} onChange={(e: ChangeEvent<HTMLSelectElement>) => onSelectedLanguage(e)}>
         <option value="ca">Català</option>

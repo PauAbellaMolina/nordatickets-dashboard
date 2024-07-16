@@ -32,6 +32,8 @@ export default function EventConfig({ event }: { event: Event | undefined }) {
 
   useEffect(() => {
     if (!event) return;
+    setAccessEventTickets([]);
+    setEventTickets([]);
     setLocalEvent(event);
     let unmounted = false;
 
