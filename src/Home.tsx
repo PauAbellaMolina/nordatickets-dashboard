@@ -86,7 +86,7 @@ export default function Home({ session }: { session: Session }) {
               <img src={ChevronDown} alt="chevron down" className="chevronDown" />
             </div>
           :
-            <h1 className="title">{events[0]?.name}</h1>
+            <h1 className="eventTitle">{events[0]?.name}</h1>
           }
           <img src={!configMode ? Settings : BarChart} alt="settings" className="settings" onClick={onClickSettings} />
         </div>
