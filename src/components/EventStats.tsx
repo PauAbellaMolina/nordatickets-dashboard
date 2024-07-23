@@ -79,9 +79,9 @@ export default function EventStats({ event }: { event: Event | undefined }) {
 
   const getBoxSelectedBackgroundColor = (key: string) => {
     switch (key) {
-      case i18n?.t('ticketsSold') ?? 'Sold':
+      case 'sold':
         return 'rgba(136, 132, 216, 0.18)';
-      case i18n?.t('ticketsUsed') ?? 'Used':
+      case 'used':
         return 'rgba(130, 202, 157, 0.18)';
       default:
         return 'rgba(140, 144, 163, 0.18)';
@@ -90,9 +90,9 @@ export default function EventStats({ event }: { event: Event | undefined }) {
 
   const getBoxSelectedColor = (key: string) => {
     switch (key) {
-      case i18n?.t('ticketsSold') ?? 'Sold':
+      case 'sold':
         return 'rgba(136, 132, 216, 1)';
-      case i18n?.t('ticketsUsed') ?? 'Used':
+      case 'used':
         return 'rgba(130, 202, 157, 1)';
       default:
         return 'text';
@@ -135,8 +135,8 @@ export default function EventStats({ event }: { event: Event | undefined }) {
             <YAxis tickMargin={3} width={higherStat?.toString()?.length * 13 < 30 ? 35 : higherStat?.toString()?.length * 13} />
             <CartesianGrid strokeDasharray="3 3" opacity={.5} />
             <Tooltip labelStyle={{ color: 'black' }} />
-            <Area type="monotone" dataKey={selectedStats.includes(0) ? i18n?.t('ticketsSold') ?? 'Sold' : ''} stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
-            <Area type="monotone" dataKey={selectedStats.includes(1) ? i18n?.t('ticketsUsed') ?? 'Used' : ''} stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
+            <Area type="monotone" dataKey={selectedStats.includes(0) ? 'sold' : ''} stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
+            <Area type="monotone" dataKey={selectedStats.includes(1) ? 'used' : ''} stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
           </AreaChart>
         </> : null }
       </div>
