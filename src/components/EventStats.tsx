@@ -79,9 +79,9 @@ export default function EventStats({ event }: { event: Event | undefined }) {
 
   const getBoxSelectedBackgroundColor = (key: string) => {
     switch (key) {
-      case 'sold':
+      case i18n?.t('ticketsSold') ?? 'Sold':
         return 'rgba(136, 132, 216, 0.18)';
-      case 'used':
+      case i18n?.t('ticketsUsed') ?? 'Used':
         return 'rgba(130, 202, 157, 0.18)';
       default:
         return 'rgba(140, 144, 163, 0.18)';
@@ -90,9 +90,9 @@ export default function EventStats({ event }: { event: Event | undefined }) {
 
   const getBoxSelectedColor = (key: string) => {
     switch (key) {
-      case 'sold':
+      case i18n?.t('ticketsSold') ?? 'Sold':
         return 'rgba(136, 132, 216, 1)';
-      case 'used':
+      case i18n?.t('ticketsUsed') ?? 'Used':
         return 'rgba(130, 202, 157, 1)';
       default:
         return 'text';
