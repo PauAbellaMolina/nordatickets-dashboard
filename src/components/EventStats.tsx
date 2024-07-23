@@ -135,8 +135,8 @@ export default function EventStats({ event }: { event: Event | undefined }) {
             <YAxis tickMargin={3} width={higherStat?.toString()?.length * 13 < 30 ? 35 : higherStat?.toString()?.length * 13} />
             <CartesianGrid strokeDasharray="3 3" opacity={.5} />
             <Tooltip labelStyle={{ color: 'black' }} />
-            <Area type="monotone" dataKey={selectedStats.includes(0) ? 'sold' : ''} stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
-            <Area type="monotone" dataKey={selectedStats.includes(1) ? 'used' : ''} stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
+            <Area type="monotone" dataKey={selectedStats.includes(0) ? i18n?.t('ticketsSold') ?? 'Sold' : ''} stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
+            <Area type="monotone" dataKey={selectedStats.includes(1) ? i18n?.t('ticketsUsed') ?? 'Used' : ''} stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
           </AreaChart>
         </> : null }
       </div>

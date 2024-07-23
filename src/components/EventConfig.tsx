@@ -79,7 +79,7 @@ export default function EventConfig({ event }: { event: Event | undefined }) {
   };
   const handleGeneralAccessSellingAction = () => {
     if (!localEvent) return;
-    if (localEvent.selling) {
+    if (localEvent.selling_access) {
       if (!window.confirm(i18n?.t('deactivateGeneralAccessTicketConfirmationQuestion'))) {
         return;
       }
