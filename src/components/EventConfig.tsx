@@ -131,7 +131,7 @@ export default function EventConfig({ event }: { event: Event | undefined }) {
         <div className="configBoxContainer">
           <p>{ i18n?.t('accessTickets') }:</p>
           {accessEventTickets.map(({ name, price, selling, id }, index) => (
-            <ConfigBox key={index} id={"general"+id} title={name + ' · ' + price + '€'} selling={selling} onAction={() => handleAccessSellingAction(id, selling)} />
+            <ConfigBox key={index} id={"general"+id} title={name + ' · ' + ((price ?? 0) / 100) + '€'} selling={selling} onAction={() => handleAccessSellingAction(id, selling)} />
           ))}
         </div>
       : null }
@@ -139,7 +139,7 @@ export default function EventConfig({ event }: { event: Event | undefined }) {
         <div className="configBoxContainer">
           <p>Tickets:</p>
           {eventTickets.map(({ name, price, selling, id }, index) => (
-            <ConfigBox key={index} id={"access"+id} title={name + ' · ' + price + '€'} selling={selling} onAction={() => handleTicketsSellingAction(id, selling)} />
+            <ConfigBox key={index} id={"access"+id} title={name + ' · ' + ((price ?? 0) / 100) + '€'} selling={selling} onAction={() => handleTicketsSellingAction(id, selling)} />
           ))}
         </div>
       : 
