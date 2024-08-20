@@ -80,6 +80,7 @@ export type Database = {
           color_code_light: string | null
           created_at: string
           event_id: number | null
+          hide_from_event_page: boolean
           id: number
           iva: number
           minor_restricted: boolean
@@ -94,6 +95,7 @@ export type Database = {
           color_code_light?: string | null
           created_at?: string
           event_id?: number | null
+          hide_from_event_page?: boolean
           id?: number
           iva?: number
           minor_restricted?: boolean
@@ -108,6 +110,7 @@ export type Database = {
           color_code_light?: string | null
           created_at?: string
           event_id?: number | null
+          hide_from_event_page?: boolean
           id?: number
           iva?: number
           minor_restricted?: boolean
@@ -139,6 +142,7 @@ export type Database = {
           selling: boolean
           selling_access: boolean
           ticket_fee: number | null
+          tickets_deactivable: boolean
         }
         Insert: {
           color_code_dark?: string | null
@@ -152,6 +156,7 @@ export type Database = {
           selling?: boolean
           selling_access?: boolean
           ticket_fee?: number | null
+          tickets_deactivable?: boolean
         }
         Update: {
           color_code_dark?: string | null
@@ -165,6 +170,7 @@ export type Database = {
           selling?: boolean
           selling_access?: boolean
           ticket_fee?: number | null
+          tickets_deactivable?: boolean
         }
         Relationships: []
       }
@@ -326,13 +332,6 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_wallet_tickets_event_tickets_name_fkey"
-            columns: ["event_tickets_name"]
-            isOneToOne: false
-            referencedRelation: "event_tickets"
-            referencedColumns: ["name"]
-          },
-          {
             foreignKeyName: "wallet_tickets_event_id_fkey"
             columns: ["event_id"]
             isOneToOne: false
@@ -388,6 +387,12 @@ export type Database = {
       read_secret: {
         Args: {
           secret_name: string
+        }
+        Returns: string
+      }
+      user_email_by_id: {
+        Args: {
+          user_id: string
         }
         Returns: string
       }
@@ -679,6 +684,10 @@ export type Database = {
           metadata: Json
           updated_at: string
         }[]
+      }
+      operation: {
+        Args: Record<PropertyKey, never>
+        Returns: string
       }
       search: {
         Args: {

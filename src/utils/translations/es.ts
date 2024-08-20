@@ -16,9 +16,11 @@ export const es: { [key: string]: string } = {
   deactivateSelling: 'Desactivar venta',
   activateSelling: 'Activar venta',
   eventConfiguration: 'Configuración del evento',
+  generalDeactivation: 'Canjeo general',
   generalSelling: 'Venta general',
   accessTickets: 'Tickets de entrada',
-  deactivateGeneralTicketConfirmationQuestion: '¿Estás seguro de que quieres desactivar la venta de TODOS los tickets?',
+  deactivateGeneralTicketDeactivationConfirmationQuestion: '¿Estás seguro de que quieres desactivar el canjeo de TODOS los tickets?',
+  deactivateGeneralTicketSellingConfirmationQuestion: '¿Estás seguro de que quieres desactivar la venta de TODOS los tickets?',
   deactivateGeneralAccessTicketConfirmationQuestion: '¿Estás seguro de que quieres desactivar la venta de TODOS los tickets de entrada?',
   deactivateAccessTicketConfirmationQuestion: '¿Estás seguro de que quieres desactivar la venta de este ticket de entrada?',
   deactivateTicketConfirmationQuestion: '¿Estás seguro de que quieres desactivar la venta de este ticket?'
