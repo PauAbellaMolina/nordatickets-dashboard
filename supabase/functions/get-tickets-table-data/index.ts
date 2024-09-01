@@ -44,15 +44,26 @@ Deno.serve(async (req) => {
       throw new Error(error.message);
     }
 
+    const { data: orders, error: ordersError } = await supabase
+      .from('redsys_orders')
+      .select('order_id')
+      .eq('event_id', eventId)
+      .eq('order_status', 'PAYMENT_SUCCEEDED');
+    if (ordersError) {
+      throw new Error(ordersError.message);
+    }
+
+    const filteredWalletTickets = wallet_tickets.filter(ticket => orders.some(order => order.order_id === ticket.order_id) || ticket.order_id === 'free');
+
     const { data: formSubmits, error: formSubmitsError } = await supabase
       .from('ticket_form_submits')
       .select('id, entries')
-      .in('id', wallet_tickets.map(ticket => ticket.ticket_form_submits_id).filter(Boolean));
+      .in('id', filteredWalletTickets.map(ticket => ticket.ticket_form_submits_id).filter(Boolean));
     if (formSubmitsError) {
       throw new Error(formSubmitsError.message);
     }
     
-    const userIds = [...new Set(wallet_tickets.map(ticket => ticket.user_id))];
+    const userIds = [...new Set(filteredWalletTickets.map(ticket => ticket.user_id))];
     const { data: users, error: userError } = await supabase
       .from('users')
       .select('id, fullname')
@@ -73,7 +84,7 @@ Deno.serve(async (req) => {
     const ticketsTableStruct: TicketsTableStruct = [];
     const userIndexMap = new Map<string, number>();
 
-    for (const ticket of wallet_tickets) {
+    for (const ticket of filteredWalletTickets) {
       const userId = ticket.user_id ?? '';
       let userIndex = userIndexMap.get(userId);
 

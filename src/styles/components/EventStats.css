@@ -117,7 +117,7 @@
 }
 
 .user-row {
-  background-color: rgba(255, 255, 255, .1);
+  background-color: rgba(255, 255, 255, .08);
   font-weight: bold;
 }
 
@@ -173,5 +173,23 @@
 
   .box:hover {
     background-color: rgba(0, 0, 0, .06);
+  }
+
+  .user-row {
+    background-color: rgba(0, 0, 0, .12);
+  }
+
+  .ticketsTable tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, .06);
+  }
+
+  .pagination button {
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    background-color: #f0f0f0;
+    color: #333;
+  }
+
+  .pagination button.active {
+    background-color: rgba(0, 0, 0, .18);
   }
 }
