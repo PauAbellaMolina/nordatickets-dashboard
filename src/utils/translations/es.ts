@@ -23,5 +23,16 @@ export const es: { [key: string]: string } = {
   deactivateGeneralTicketSellingConfirmationQuestion: '¿Estás seguro de que quieres desactivar la venta de TODOS los tickets?',
   deactivateGeneralAccessTicketConfirmationQuestion: '¿Estás seguro de que quieres desactivar la venta de TODOS los tickets de entrada?',
   deactivateAccessTicketConfirmationQuestion: '¿Estás seguro de que quieres desactivar la venta de este ticket de entrada?',
-  deactivateTicketConfirmationQuestion: '¿Estás seguro de que quieres desactivar la venta de este ticket?'
+  deactivateTicketConfirmationQuestion: '¿Estás seguro de que quieres desactivar la venta de este ticket?',
+  ticketsGraph: 'Gráfico de tickets',
+  ticketsTable: 'Tabla de tickets',
+  id: 'Id',
+  ticketName: 'Nombre del ticket',
+  price: 'Precio',
+  deactivatedAt: 'Desactivado en',
+  formSubmissions: 'Respuestas de formulario',
+  previous: 'Anterior',
+  next: 'Siguiente',
+  formSubmissionsDetail: 'Detalle de la respuesta',
+  clickToSee: 'Click para ver'
 };

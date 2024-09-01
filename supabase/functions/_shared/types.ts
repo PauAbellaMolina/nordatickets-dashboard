@@ -34,125 +34,7 @@ export type Database = {
   }
   public: {
     Tables: {
-      event_tickets: {
-        Row: {
-          color_code_dark: string | null
-          color_code_light: string | null
-          created_at: string
-          event_id: number | null
-          id: number
-          iva: number
-          name: string | null
-          price: number | null
-          selling: boolean | null
-        }
-        Insert: {
-          color_code_dark?: string | null
-          color_code_light?: string | null
-          created_at?: string
-          event_id?: number | null
-          id?: number
-          iva?: number
-          name?: string | null
-          price?: number | null
-          selling?: boolean | null
-        }
-        Update: {
-          color_code_dark?: string | null
-          color_code_light?: string | null
-          created_at?: string
-          event_id?: number | null
-          id?: number
-          iva?: number
-          name?: string | null
-          price?: number | null
-          selling?: boolean | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "event_tickets_event_id_fkey"
-            columns: ["event_id"]
-            isOneToOne: false
-            referencedRelation: "events"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      events: {
-        Row: {
-          color_code_dark: string | null
-          color_code_light: string | null
-          created_at: string
-          description: string | null
-          id: number
-          more_info_content: string | null
-          name: string | null
-          organizer_id: number | null
-          selling: boolean | null
-          ticket_fee: number | null
-        }
-        Insert: {
-          color_code_dark?: string | null
-          color_code_light?: string | null
-          created_at?: string
-          description?: string | null
-          id?: number
-          more_info_content?: string | null
-          name?: string | null
-          organizer_id?: number | null
-          selling?: boolean | null
-          ticket_fee?: number | null
-        }
-        Update: {
-          color_code_dark?: string | null
-          color_code_light?: string | null
-          created_at?: string
-          description?: string | null
-          id?: number
-          more_info_content?: string | null
-          name?: string | null
-          organizer_id?: number | null
-          selling?: boolean | null
-          ticket_fee?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "events_organizer_id_fkey"
-            columns: ["organizer_id"]
-            isOneToOne: false
-            referencedRelation: "organizers"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      faqs: {
-        Row: {
-          answer: string | null
-          created_at: string
-          id: number
-          language: string
-          order: number
-          question: string | null
-        }
-        Insert: {
-          answer?: string | null
-          created_at?: string
-          id?: number
-          language?: string
-          order: number
-          question?: string | null
-        }
-        Update: {
-          answer?: string | null
-          created_at?: string
-          id?: number
-          language?: string
-          order?: number
-          question?: string | null
-        }
-        Relationships: []
-      }
-      organizers: {
+      _organizers: {
         Row: {
           address: string | null
           cif: string | null
@@ -191,6 +73,146 @@ export type Database = {
         }
         Relationships: []
       }
+      event_tickets: {
+        Row: {
+          buy_includes_event_tickets_ids: number[] | null
+          color_code_dark: string | null
+          color_code_light: string | null
+          created_at: string
+          description: string | null
+          event_id: number | null
+          hide_from_event_page: boolean
+          id: number
+          iva: number
+          minor_restricted: boolean
+          name: string | null
+          price: number | null
+          selling: boolean
+          ticket_form_templates_id: number | null
+          type: Database["public"]["Enums"]["event_ticket_type"]
+        }
+        Insert: {
+          buy_includes_event_tickets_ids?: number[] | null
+          color_code_dark?: string | null
+          color_code_light?: string | null
+          created_at?: string
+          description?: string | null
+          event_id?: number | null
+          hide_from_event_page?: boolean
+          id?: number
+          iva?: number
+          minor_restricted?: boolean
+          name?: string | null
+          price?: number | null
+          selling?: boolean
+          ticket_form_templates_id?: number | null
+          type?: Database["public"]["Enums"]["event_ticket_type"]
+        }
+        Update: {
+          buy_includes_event_tickets_ids?: number[] | null
+          color_code_dark?: string | null
+          color_code_light?: string | null
+          created_at?: string
+          description?: string | null
+          event_id?: number | null
+          hide_from_event_page?: boolean
+          id?: number
+          iva?: number
+          minor_restricted?: boolean
+          name?: string | null
+          price?: number | null
+          selling?: boolean
+          ticket_form_templates_id?: number | null
+          type?: Database["public"]["Enums"]["event_ticket_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_tickets_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          access_tickets_section_expanded: boolean
+          access_tickets_section_title: string | null
+          color_code_dark: string | null
+          color_code_light: string | null
+          created_at: string
+          description: string | null
+          id: number
+          more_info_content: string | null
+          name: string | null
+          organizer_email: string | null
+          selling: boolean
+          selling_access: boolean
+          ticket_fee: number | null
+          tickets_deactivable: boolean
+        }
+        Insert: {
+          access_tickets_section_expanded?: boolean
+          access_tickets_section_title?: string | null
+          color_code_dark?: string | null
+          color_code_light?: string | null
+          created_at?: string
+          description?: string | null
+          id?: number
+          more_info_content?: string | null
+          name?: string | null
+          organizer_email?: string | null
+          selling?: boolean
+          selling_access?: boolean
+          ticket_fee?: number | null
+          tickets_deactivable?: boolean
+        }
+        Update: {
+          access_tickets_section_expanded?: boolean
+          access_tickets_section_title?: string | null
+          color_code_dark?: string | null
+          color_code_light?: string | null
+          created_at?: string
+          description?: string | null
+          id?: number
+          more_info_content?: string | null
+          name?: string | null
+          organizer_email?: string | null
+          selling?: boolean
+          selling_access?: boolean
+          ticket_fee?: number | null
+          tickets_deactivable?: boolean
+        }
+        Relationships: []
+      }
+      faqs: {
+        Row: {
+          answer: string | null
+          created_at: string
+          id: number
+          language: string
+          order: number
+          question: string | null
+        }
+        Insert: {
+          answer?: string | null
+          created_at?: string
+          id?: number
+          language?: string
+          order: number
+          question?: string | null
+        }
+        Update: {
+          answer?: string | null
+          created_at?: string
+          id?: number
+          language?: string
+          order?: number
+          question?: string | null
+        }
+        Relationships: []
+      }
       redsys_orders: {
         Row: {
           amount: number | null
@@ -199,7 +221,9 @@ export type Database = {
           event_id: number | null
           id: number
           order_id: string | null
-          order_status: string | null
+          order_status:
+            | Database["public"]["Enums"]["redsys_order_status"]
+            | null
           user_id: string | null
         }
         Insert: {
@@ -209,7 +233,9 @@ export type Database = {
           event_id?: number | null
           id?: number
           order_id?: string | null
-          order_status?: string | null
+          order_status?:
+            | Database["public"]["Enums"]["redsys_order_status"]
+            | null
           user_id?: string | null
         }
         Update: {
@@ -219,7 +245,9 @@ export type Database = {
           event_id?: number | null
           id?: number
           order_id?: string | null
-          order_status?: string | null
+          order_status?:
+            | Database["public"]["Enums"]["redsys_order_status"]
+            | null
           user_id?: string | null
         }
         Relationships: [
@@ -239,12 +267,117 @@ export type Database = {
           },
         ]
       }
+      ticket_form_submits: {
+        Row: {
+          created_at: string
+          entries: string[] | null
+          event_id: number
+          id: number
+          tickets_form_templates_id: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          entries?: string[] | null
+          event_id: number
+          id?: number
+          tickets_form_templates_id: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          entries?: string[] | null
+          event_id?: number
+          id?: number
+          tickets_form_templates_id?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ticket_form_submits_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ticket_form_templates: {
+        Row: {
+          created_at: string
+          id: number
+          q1: string | null
+          q1_max_value: number | null
+          q1_multiplies_ticket_price: boolean
+          q1_options: string[] | null
+          q1_required: boolean
+          q1_type: Database["public"]["Enums"]["ticket_form_templates_q_type"]
+          q2: string | null
+          q2_max_value: number | null
+          q2_multiplies_ticket_price: boolean
+          q2_options: string[] | null
+          q2_required: boolean
+          q2_type: Database["public"]["Enums"]["ticket_form_templates_q_type"]
+          q3: string | null
+          q3_max_value: number | null
+          q3_multiplies_ticket_price: boolean
+          q3_options: string[] | null
+          q3_required: boolean
+          q3_type: Database["public"]["Enums"]["ticket_form_templates_q_type"]
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          q1?: string | null
+          q1_max_value?: number | null
+          q1_multiplies_ticket_price?: boolean
+          q1_options?: string[] | null
+          q1_required?: boolean
+          q1_type?: Database["public"]["Enums"]["ticket_form_templates_q_type"]
+          q2?: string | null
+          q2_max_value?: number | null
+          q2_multiplies_ticket_price?: boolean
+          q2_options?: string[] | null
+          q2_required?: boolean
+          q2_type?: Database["public"]["Enums"]["ticket_form_templates_q_type"]
+          q3?: string | null
+          q3_max_value?: number | null
+          q3_multiplies_ticket_price?: boolean
+          q3_options?: string[] | null
+          q3_required?: boolean
+          q3_type?: Database["public"]["Enums"]["ticket_form_templates_q_type"]
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          q1?: string | null
+          q1_max_value?: number | null
+          q1_multiplies_ticket_price?: boolean
+          q1_options?: string[] | null
+          q1_required?: boolean
+          q1_type?: Database["public"]["Enums"]["ticket_form_templates_q_type"]
+          q2?: string | null
+          q2_max_value?: number | null
+          q2_multiplies_ticket_price?: boolean
+          q2_options?: string[] | null
+          q2_required?: boolean
+          q2_type?: Database["public"]["Enums"]["ticket_form_templates_q_type"]
+          q3?: string | null
+          q3_max_value?: number | null
+          q3_multiplies_ticket_price?: boolean
+          q3_options?: string[] | null
+          q3_required?: boolean
+          q3_type?: Database["public"]["Enums"]["ticket_form_templates_q_type"]
+        }
+        Relationships: []
+      }
       users: {
         Row: {
           card_number: string | null
           created_at: string
           event_ids_following: number[] | null
           expiry_date: number | null
+          fullname: string | null
           id: string
         }
         Insert: {
@@ -252,6 +385,7 @@ export type Database = {
           created_at?: string
           event_ids_following?: number[] | null
           expiry_date?: number | null
+          fullname?: string | null
           id: string
         }
         Update: {
@@ -259,6 +393,7 @@ export type Database = {
           created_at?: string
           event_ids_following?: number[] | null
           expiry_date?: number | null
+          fullname?: string | null
           id?: string
         }
         Relationships: [
@@ -279,9 +414,12 @@ export type Database = {
           event_tickets_name: string | null
           id: number
           iva: number
-          order_id: string | null
+          order_id: string
           price: number | null
+          ticket_form_submits_id: number | null
+          type: Database["public"]["Enums"]["event_ticket_type"]
           used_at: string | null
+          used_with_addon_id: number | null
           user_id: string | null
         }
         Insert: {
@@ -291,9 +429,12 @@ export type Database = {
           event_tickets_name?: string | null
           id?: number
           iva?: number
-          order_id?: string | null
+          order_id: string
           price?: number | null
+          ticket_form_submits_id?: number | null
+          type?: Database["public"]["Enums"]["event_ticket_type"]
           used_at?: string | null
+          used_with_addon_id?: number | null
           user_id?: string | null
         }
         Update: {
@@ -303,19 +444,15 @@ export type Database = {
           event_tickets_name?: string | null
           id?: number
           iva?: number
-          order_id?: string | null
+          order_id?: string
           price?: number | null
+          ticket_form_submits_id?: number | null
+          type?: Database["public"]["Enums"]["event_ticket_type"]
           used_at?: string | null
+          used_with_addon_id?: number | null
           user_id?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "public_wallet_tickets_event_tickets_name_fkey"
-            columns: ["event_tickets_name"]
-            isOneToOne: false
-            referencedRelation: "event_tickets"
-            referencedColumns: ["name"]
-          },
           {
             foreignKeyName: "wallet_tickets_event_id_fkey"
             columns: ["event_id"]
@@ -328,6 +465,13 @@ export type Database = {
             columns: ["event_tickets_id"]
             isOneToOne: false
             referencedRelation: "event_tickets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wallet_tickets_ticket_form_submits_id_fkey"
+            columns: ["ticket_form_submits_id"]
+            isOneToOne: false
+            referencedRelation: "ticket_form_submits"
             referencedColumns: ["id"]
           },
           {
@@ -350,6 +494,12 @@ export type Database = {
         }
         Returns: string
       }
+      email_is_admin: {
+        Args: {
+          email_to_check: string
+        }
+        Returns: boolean
+      }
       insert_secret: {
         Args: {
           name: string
@@ -369,9 +519,25 @@ export type Database = {
         }
         Returns: string
       }
+      user_email_by_id: {
+        Args: {
+          user_id: string
+        }
+        Returns: string
+      }
     }
     Enums: {
-      [_ in never]: never
+      event_ticket_type: "CONSUMABLE" | "ADDON" | "ADDON_REFUNDABLE" | "ACCESS"
+      redsys_order_status:
+        | "PAYMENT_PENDING"
+        | "PAYMENT_SUCCEEDED"
+        | "PAYMENT_FAILED"
+      ticket_form_templates_q_type:
+        | "TEXT"
+        | "EMAIL"
+        | "NUMBER"
+        | "DATE"
+        | "OPTIONS"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -451,6 +617,7 @@ export type Database = {
           owner_id: string | null
           path_tokens: string[] | null
           updated_at: string | null
+          user_metadata: Json | null
           version: string | null
         }
         Insert: {
@@ -464,6 +631,7 @@ export type Database = {
           owner_id?: string | null
           path_tokens?: string[] | null
           updated_at?: string | null
+          user_metadata?: Json | null
           version?: string | null
         }
         Update: {
@@ -477,6 +645,7 @@ export type Database = {
           owner_id?: string | null
           path_tokens?: string[] | null
           updated_at?: string | null
+          user_metadata?: Json | null
           version?: string | null
         }
         Relationships: [
@@ -498,6 +667,7 @@ export type Database = {
           key: string
           owner_id: string | null
           upload_signature: string
+          user_metadata: Json | null
           version: string
         }
         Insert: {
@@ -508,6 +678,7 @@ export type Database = {
           key: string
           owner_id?: string | null
           upload_signature: string
+          user_metadata?: Json | null
           version: string
         }
         Update: {
@@ -518,6 +689,7 @@ export type Database = {
           key?: string
           owner_id?: string | null
           upload_signature?: string
+          user_metadata?: Json | null
           version?: string
         }
         Relationships: [
@@ -653,6 +825,10 @@ export type Database = {
           metadata: Json
           updated_at: string
         }[]
+      }
+      operation: {
+        Args: Record<PropertyKey, never>
+        Returns: string
       }
       search: {
         Args: {

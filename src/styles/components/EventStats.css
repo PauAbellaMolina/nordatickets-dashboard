@@ -23,17 +23,6 @@
   scrollbar-color: #888 #444;
 }
 
-.chartContainer {
-  overflow-x: auto;
-  padding-bottom: 10px;
-  scrollbar-width: thin;
-  scrollbar-color: #888 #444;
-}
-
-.chartTitle {
-  margin-top: 0;
-}
-
 .box {
   max-width: 150px;
   width: 100%;
@@ -62,9 +51,124 @@
   background-color: rgba(255, 255, 255, .07);
 }
 
+.collapsibleContainer {
+  background-color: rgba(255, 255, 255, .075);
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.toggleContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.chartContainer {
+  margin-top: 15px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #444;
+}
+
+.chartTitle {
+  margin-top: 0;
+}
+
+.tableContainer {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+.ticketsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.ticketsTable th,
+.ticketsTable td {
+  border: 1px solid rgba(255, 255, 255, .04);
+  padding: 8px;
+  text-align: left;
+  white-space: nowrap;
+  max-width: 150px;
+  min-width: 50px;
+  overflow-x: auto;
+}
+
+.header-row {
+  font-weight: bold;
+}
+
+.ticketsTable th {
+  background-color: rgba(255, 255, 255, .04);
+  font-weight: bold;
+}
+
+.ticketsTable tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, .04);
+}
+
+.ticketsTable tr:hover {
+  background-color: rgba(255, 255, 255, .04);
+}
+
+.user-row {
+  background-color: rgba(255, 255, 255, .1);
+  font-weight: bold;
+}
+
+.small-row {
+  min-width: 0 !important;
+}
+
+.smallest-row {
+  min-width: 10px !important;
+  padding: 0 !important;
+}
+
+.submissionsContainer {
+  margin: 0 10px;
+}
+
+.odd {
+  margin-left: 5px;
+  margin-bottom: 8px;
+}
+.even {
+  font-weight: bold;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background-color: #131313;
+  color: #a7a7a7;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background-color: rgba(255, 255, 255, 0.20);
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 @media (prefers-color-scheme: light) {
-  .eventStatsContainer {
-    background-color: #ffffff;
+  .collapsibleContainer {
+    background-color: rgba(0, 0, 0, .05);
   }
 
   .box:hover {

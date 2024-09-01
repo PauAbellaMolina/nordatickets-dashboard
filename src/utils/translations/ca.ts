@@ -23,5 +23,16 @@ export const ca: { [key: string]: string } = {
   deactivateGeneralTicketSellingConfirmationQuestion: 'Estàs segur que vols desactivar la venda de TOTS els tickets?',
   deactivateGeneralAccessTicketConfirmationQuestion: 'Estàs segur que vols desactivar la venda de TOTS els tickets d\'entrada?',
   deactivateAccessTicketConfirmationQuestion: 'Estàs segur que vols desactivar la venda d\'aquest ticket d\'entrada?',
-  deactivateTicketConfirmationQuestion: 'Estàs segur que vols desactivar la venda d\'aquest ticket?'
+  deactivateTicketConfirmationQuestion: 'Estàs segur que vols desactivar la venda d\'aquest ticket?',
+  ticketsGraph: 'Gràfic de tickets',
+  ticketsTable: 'Taula de tickets',
+  id: 'Id',
+  ticketName: 'Nom del ticket',
+  price: 'Preu',
+  deactivatedAt: 'Desactivat a',
+  formSubmissions: 'Respostes de formulari',
+  previous: 'Anterior',
+  next: 'Següent',
+  formSubmissionsDetail: 'Detall de la resposta',
+  clickToSee: 'Clica per veure'
 };

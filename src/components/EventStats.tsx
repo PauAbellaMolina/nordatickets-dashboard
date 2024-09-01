@@ -7,6 +7,9 @@ import { Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts'
 import useWindowDimensions from '../utils/useWindowDimensions';
 import { useLanguageProvider } from '../utils/LanguageProvider';
 import { I18n } from 'i18n-js';
+import Collapsible from './Collapsible';
+import ChevronDown from '../assets/chevron-down.svg';
+import Modal from './Modal';
 
 interface BoxProps {
   number: number | null;
@@ -20,6 +23,18 @@ type DataStructure = {
   key: string;
   subtitle: string;
   data: number | null;
+}[];
+
+type TicketsTableStruct = {
+  user_fullname: string;
+  user_email: string;
+  tickets: {
+    id: number;
+    event_tickets_name: string;
+    price: number;
+    used_at: string;
+    ticket_form_submit: string[];
+  }[];
 }[];
 
 const Box: React.FC<BoxProps> = ({ number, i18n, subtitle, onClick, styles }) => (
@@ -36,8 +51,16 @@ export default function EventStats({ event }: { event: Event | undefined }) {
   const [selectedStats, setSelectedStats] = useState<number[]>([0, 1]);
   const [stats, setStats] = useState<DataStructure>([]);
   const [higherStat, setHigherStat] = useState<number>(0);
+  const [isChartStatsOpen, setChartIsStatsOpen] = useState(false);
+  const [ticketsTableData, setTicketsTableData] = useState<TicketsTableStruct>([]);
+  const [isTicketsTableOpen, setIsTicketsTableOpen] = useState(false);
+  const [selectedFormSubmit, setSelectedFormSubmit] = useState<string[] | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(25); // Should match the edge function default value
+  const [totalPages, setTotalPages] = useState(1);
 
-  const {  width } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   useEffect(() => {
     setHigherStat(Math.max(...stats.map(stat => stat.data ?? 0)));
@@ -48,6 +71,7 @@ export default function EventStats({ event }: { event: Event | undefined }) {
     setChartStats([]);
     setSelectedStats([0, 1]);
     setStats([]);
+    setTicketsTableData([]);
     setHigherStat(0);
     let unmounted = false;
 
@@ -58,6 +82,25 @@ export default function EventStats({ event }: { event: Event | undefined }) {
     };
   }, [event]);
 
+  useEffect(() => {
+    if (!event) return;
+    let unmounted = false;
+
+    getTicketsTableData(event.id, unmounted, currentPage);
+
+    return () => {
+      unmounted = true;
+    };
+  }, [event, currentPage]);
+
+  const toggleChartStatsOpen = () => {
+    setChartIsStatsOpen(!isChartStatsOpen);
+  };
+
+  const toggleTicketsTableOpen = () => {
+    setIsTicketsTableOpen(!isTicketsTableOpen);
+  };
+
   const getStats = async (eventId: number, unmounted: boolean) => {
     const { data, error } = await supabase.functions.invoke('get-sold-tickets-stat', {
       body: { eventId: eventId }
@@ -67,6 +110,17 @@ export default function EventStats({ event }: { event: Event | undefined }) {
     setStats(data[0]);
     
     setChartStats(data[1]);
+  };
+
+  const getTicketsTableData = async (eventId: number, unmounted: boolean, page: number) => {
+    const { data, error } = await supabase.functions.invoke('get-tickets-table-data', {
+      body: { eventId: eventId, page: page, itemsPerPage: itemsPerPage }
+    });
+    if (error || unmounted) return;
+
+    setTicketsTableData(data.tickets);
+    setTotalPages(data.totalPages);
+    setCurrentPage(data.currentPage);
   };
 
   const handleSelectedStat = (index: number) => {
@@ -104,6 +158,15 @@ export default function EventStats({ event }: { event: Event | undefined }) {
   };
   const followingStat = findFollowingStat();
 
+  const handleFormSubmitClick = (formSubmit: string[]) => {
+    setSelectedFormSubmit(formSubmit);
+    setIsModalOpen(true);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
   return (
     <div className="eventStatsContainer">
       <p className="usersFollowingStat">{ followingStat ? i18n?.t(followingStat.subtitle) : 'Usuaris seguint l\'esdeveniment' }: <b>{ stats.find(({ key }) => key === 'following')?.data }</b></p>
@@ -118,28 +181,128 @@ export default function EventStats({ event }: { event: Event | undefined }) {
         ))}
       </div>
       }
-      <div className="chartContainer">
-        { chartStats.length ? <>
-          <AreaChart width={width-30} height={500} data={chartStats}>
-            <defs>
-              <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
-              </linearGradient>
-              <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#82ca9d" stopOpacity={0}/>
-              </linearGradient>
-            </defs>
-            <XAxis dataKey="formattedName" angle={-60} textAnchor="end" tick={{ fontSize: 13 }} tickMargin={5} height={100} />
-            <YAxis tickMargin={3} width={higherStat?.toString()?.length * 13 < 30 ? 35 : higherStat?.toString()?.length * 13} />
-            <CartesianGrid strokeDasharray="3 3" opacity={.5} />
-            <Tooltip labelStyle={{ color: 'black' }} />
-            <Area type="monotone" dataKey={selectedStats.includes(0) ? 'sold' : ''} stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
-            <Area type="monotone" dataKey={selectedStats.includes(1) ? 'used' : ''} stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
-          </AreaChart>
-        </> : null }
-      </div>
+      { chartStats.length ?
+        <div className="collapsibleContainer">
+          <div className="toggleContainer" onClick={toggleChartStatsOpen}>
+            <span>{ i18n?.t("ticketsGraph") }</span>
+            <img 
+              src={ChevronDown} 
+              alt="toggle"
+              className="chevronDown small"
+              style={{ 
+                transform: isChartStatsOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                transition: 'transform 0.3s ease-in-out'
+              }}
+            />
+          </div>
+          <Collapsible isOpen={isChartStatsOpen}>
+            <div className="chartContainer">
+              <AreaChart width={width-50} height={475} data={chartStats}>
+                <defs>
+                  <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
+                  </linearGradient>
+                  <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#82ca9d" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="formattedName" angle={-60} textAnchor="end" tick={{ fontSize: 13 }} tickMargin={5} height={100} />
+                <YAxis tickMargin={3} width={higherStat?.toString()?.length * 13 < 30 ? 35 : higherStat?.toString()?.length * 13} />
+                <CartesianGrid strokeDasharray="3 3" opacity={.5} />
+                <Tooltip labelStyle={{ color: 'black' }} />
+                <Area type="monotone" dataKey={selectedStats.includes(0) ? 'sold' : ''} stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
+                <Area type="monotone" dataKey={selectedStats.includes(1) ? 'used' : ''} stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
+              </AreaChart>
+            </div>
+          </Collapsible>
+        </div>
+      : null }
+      { ticketsTableData.length ?
+        <div className="collapsibleContainer">
+          <div className="toggleContainer" onClick={toggleTicketsTableOpen}>
+            <span>{ i18n?.t("ticketsTable") }</span>
+            <img 
+              src={ChevronDown} 
+              alt="toggle"
+              className="chevronDown small"
+              style={{ 
+                transform: isTicketsTableOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                transition: 'transform 0.3s ease-in-out'
+              }}
+            />
+          </div>
+          <Collapsible isOpen={isTicketsTableOpen}>
+            <div className="tableContainer">
+              { ticketsTableData.map((userData, userIndex) => (
+                <table key={`user-${userIndex}`} className="ticketsTable">
+                  <tbody>
+                    <tr className="user-row">
+                      <td colSpan={5}>{userData.user_fullname} · {userData.user_email}</td>
+                    </tr>
+                    <tr className="header-row">
+                      <td className="small-row">{ i18n?.t("id") }</td>
+                      <td>{ i18n?.t("ticketName") }</td>
+                      <td>{ i18n?.t("price") }</td>
+                      <td>{ i18n?.t("deactivatedAt") }</td>
+                      <td>{ i18n?.t("formSubmissions") }</td>
+                    </tr>
+                    { userData.tickets.map((ticket, ticketIndex) => (
+                      <tr key={`${userIndex}-${ticketIndex}`}>
+                        <td className="small-row">{ticket.id}</td>
+                        <td>{ticket.event_tickets_name}</td>
+                        <td>{ticket.price / 100}€</td>
+                        <td>{ticket.used_at ? new Date(ticket.used_at).toLocaleString('es-ES', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' }).replace(',', '') : '-'}</td>
+                        <td 
+                          onClick={() => ticket.ticket_form_submit.length ? handleFormSubmitClick(ticket.ticket_form_submit) : null}
+                          style={{ cursor: 'pointer' }}
+                        >
+                          {ticket.ticket_form_submit.length ? i18n?.t("clickToSee") : '-'}
+                        </td>
+                      </tr>
+                    )) }
+                  </tbody>
+                </table>
+              )) }
+            </div>
+            {totalPages > 1 && (
+              <div className="pagination">
+                {currentPage > 1 && (
+                  <button onClick={() => handlePageChange(currentPage - 1)}>
+                    { i18n?.t("previous") }
+                  </button>
+                )}
+                {[...Array(totalPages)].map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handlePageChange(index + 1)}
+                    className={currentPage === index + 1 ? 'active' : ''}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+                {currentPage < totalPages && (
+                  <button onClick={() => handlePageChange(currentPage + 1)}>
+                    { i18n?.t("next") }
+                  </button>
+                )}
+              </div>
+            )}
+          </Collapsible>
+        </div>
+      : null }
+
+      { isModalOpen && selectedFormSubmit && (
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <h2 style={{ marginTop: '0' }}>{ i18n?.t("formSubmissionsDetail") }</h2>
+          <div className="submissionsContainer">
+            {selectedFormSubmit.map((submission, index) => (
+              <p key={index} className={index % 2 === 0 ? 'even' : 'odd'}>{submission}</p>
+            ))}
+          </div>
+        </Modal>
+      ) }
     </div>
   );
 }

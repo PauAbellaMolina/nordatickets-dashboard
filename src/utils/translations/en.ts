@@ -23,5 +23,16 @@ export const en: { [key: string]: string } = {
   deactivateGeneralTicketSellingConfirmationQuestion: 'Are you sure you want to deactivate ALL tickets selling?',
   deactivateGeneralAccessTicketConfirmationQuestion: 'Are you sure you want to deactivate ALL access tickets selling?',
   deactivateAccessTicketConfirmationQuestion: 'Are you sure you want to deactivate this access ticket selling?',
-  deactivateTicketConfirmationQuestion: 'Are you sure you want to deactivate this ticket selling?'
+  deactivateTicketConfirmationQuestion: 'Are you sure you want to deactivate this ticket selling?',
+  ticketsGraph: 'Tickets graph',
+  ticketsTable: 'Tickets table',
+  id: 'Id',
+  ticketName: 'Ticket name',
+  price: 'Price',
+  deactivatedAt: 'Deactivated at',
+  formSubmissions: 'Form submissions',
+  previous: 'Previous',
+  next: 'Next',
+  formSubmissionsDetail: 'Form submission detail',
+  clickToSee: 'Click to see'
 };

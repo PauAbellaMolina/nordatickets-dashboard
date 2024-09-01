@@ -79,6 +79,7 @@ export type Database = {
           color_code_dark: string | null
           color_code_light: string | null
           created_at: string
+          description: string | null
           event_id: number | null
           hide_from_event_page: boolean
           id: number
@@ -95,6 +96,7 @@ export type Database = {
           color_code_dark?: string | null
           color_code_light?: string | null
           created_at?: string
+          description?: string | null
           event_id?: number | null
           hide_from_event_page?: boolean
           id?: number
@@ -111,6 +113,7 @@ export type Database = {
           color_code_dark?: string | null
           color_code_light?: string | null
           created_at?: string
+          description?: string | null
           event_id?: number | null
           hide_from_event_page?: boolean
           id?: number
@@ -134,6 +137,8 @@ export type Database = {
       }
       events: {
         Row: {
+          access_tickets_section_expanded: boolean
+          access_tickets_section_title: string | null
           color_code_dark: string | null
           color_code_light: string | null
           created_at: string
@@ -148,6 +153,8 @@ export type Database = {
           tickets_deactivable: boolean
         }
         Insert: {
+          access_tickets_section_expanded?: boolean
+          access_tickets_section_title?: string | null
           color_code_dark?: string | null
           color_code_light?: string | null
           created_at?: string
@@ -162,6 +169,8 @@ export type Database = {
           tickets_deactivable?: boolean
         }
         Update: {
+          access_tickets_section_expanded?: boolean
+          access_tickets_section_title?: string | null
           color_code_dark?: string | null
           color_code_light?: string | null
           created_at?: string
@@ -266,7 +275,6 @@ export type Database = {
           id: number
           tickets_form_templates_id: number
           user_id: string
-          wallet_tickets_id: number
         }
         Insert: {
           created_at?: string
@@ -275,7 +283,6 @@ export type Database = {
           id?: number
           tickets_form_templates_id: number
           user_id: string
-          wallet_tickets_id: number
         }
         Update: {
           created_at?: string
@@ -284,7 +291,6 @@ export type Database = {
           id?: number
           tickets_form_templates_id?: number
           user_id?: string
-          wallet_tickets_id?: number
         }
         Relationships: [
           {
@@ -294,13 +300,6 @@ export type Database = {
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "ticket_form_submits_wallet_tickets_id_fkey"
-            columns: ["wallet_tickets_id"]
-            isOneToOne: false
-            referencedRelation: "wallet_tickets"
-            referencedColumns: ["id"]
-          },
         ]
       }
       ticket_form_templates: {
@@ -308,17 +307,20 @@ export type Database = {
           created_at: string
           id: number
           q1: string | null
-          q1_max_length: number | null
+          q1_max_value: number | null
+          q1_multiplies_ticket_price: boolean
           q1_options: string[] | null
           q1_required: boolean
           q1_type: Database["public"]["Enums"]["ticket_form_templates_q_type"]
           q2: string | null
-          q2_max_length: number | null
+          q2_max_value: number | null
+          q2_multiplies_ticket_price: boolean
           q2_options: string[] | null
           q2_required: boolean
           q2_type: Database["public"]["Enums"]["ticket_form_templates_q_type"]
           q3: string | null
-          q3_max_length: number | null
+          q3_max_value: number | null
+          q3_multiplies_ticket_price: boolean
           q3_options: string[] | null
           q3_required: boolean
           q3_type: Database["public"]["Enums"]["ticket_form_templates_q_type"]
@@ -327,17 +329,20 @@ export type Database = {
           created_at?: string
           id?: number
           q1?: string | null
-          q1_max_length?: number | null
+          q1_max_value?: number | null
+          q1_multiplies_ticket_price?: boolean
           q1_options?: string[] | null
           q1_required?: boolean
           q1_type?: Database["public"]["Enums"]["ticket_form_templates_q_type"]
           q2?: string | null
-          q2_max_length?: number | null
+          q2_max_value?: number | null
+          q2_multiplies_ticket_price?: boolean
           q2_options?: string[] | null
           q2_required?: boolean
           q2_type?: Database["public"]["Enums"]["ticket_form_templates_q_type"]
           q3?: string | null
-          q3_max_length?: number | null
+          q3_max_value?: number | null
+          q3_multiplies_ticket_price?: boolean
           q3_options?: string[] | null
           q3_required?: boolean
           q3_type?: Database["public"]["Enums"]["ticket_form_templates_q_type"]
@@ -346,17 +351,20 @@ export type Database = {
           created_at?: string
           id?: number
           q1?: string | null
-          q1_max_length?: number | null
+          q1_max_value?: number | null
+          q1_multiplies_ticket_price?: boolean
           q1_options?: string[] | null
           q1_required?: boolean
           q1_type?: Database["public"]["Enums"]["ticket_form_templates_q_type"]
           q2?: string | null
-          q2_max_length?: number | null
+          q2_max_value?: number | null
+          q2_multiplies_ticket_price?: boolean
           q2_options?: string[] | null
           q2_required?: boolean
           q2_type?: Database["public"]["Enums"]["ticket_form_templates_q_type"]
           q3?: string | null
-          q3_max_length?: number | null
+          q3_max_value?: number | null
+          q3_multiplies_ticket_price?: boolean
           q3_options?: string[] | null
           q3_required?: boolean
           q3_type?: Database["public"]["Enums"]["ticket_form_templates_q_type"]
@@ -369,6 +377,7 @@ export type Database = {
           created_at: string
           event_ids_following: number[] | null
           expiry_date: number | null
+          fullname: string | null
           id: string
         }
         Insert: {
@@ -376,6 +385,7 @@ export type Database = {
           created_at?: string
           event_ids_following?: number[] | null
           expiry_date?: number | null
+          fullname?: string | null
           id: string
         }
         Update: {
@@ -383,6 +393,7 @@ export type Database = {
           created_at?: string
           event_ids_following?: number[] | null
           expiry_date?: number | null
+          fullname?: string | null
           id?: string
         }
         Relationships: [
@@ -403,7 +414,7 @@ export type Database = {
           event_tickets_name: string | null
           id: number
           iva: number
-          order_id: string | null
+          order_id: string
           price: number | null
           ticket_form_submits_id: number | null
           type: Database["public"]["Enums"]["event_ticket_type"]
@@ -418,7 +429,7 @@ export type Database = {
           event_tickets_name?: string | null
           id?: number
           iva?: number
-          order_id?: string | null
+          order_id: string
           price?: number | null
           ticket_form_submits_id?: number | null
           type?: Database["public"]["Enums"]["event_ticket_type"]
@@ -433,7 +444,7 @@ export type Database = {
           event_tickets_name?: string | null
           id?: number
           iva?: number
-          order_id?: string | null
+          order_id?: string
           price?: number | null
           ticket_form_submits_id?: number | null
           type?: Database["public"]["Enums"]["event_ticket_type"]
@@ -454,6 +465,13 @@ export type Database = {
             columns: ["event_tickets_id"]
             isOneToOne: false
             referencedRelation: "event_tickets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wallet_tickets_ticket_form_submits_id_fkey"
+            columns: ["ticket_form_submits_id"]
+            isOneToOne: false
+            referencedRelation: "ticket_form_submits"
             referencedColumns: ["id"]
           },
           {
@@ -599,6 +617,7 @@ export type Database = {
           owner_id: string | null
           path_tokens: string[] | null
           updated_at: string | null
+          user_metadata: Json | null
           version: string | null
         }
         Insert: {
@@ -612,6 +631,7 @@ export type Database = {
           owner_id?: string | null
           path_tokens?: string[] | null
           updated_at?: string | null
+          user_metadata?: Json | null
           version?: string | null
         }
         Update: {
@@ -625,6 +645,7 @@ export type Database = {
           owner_id?: string | null
           path_tokens?: string[] | null
           updated_at?: string | null
+          user_metadata?: Json | null
           version?: string | null
         }
         Relationships: [
@@ -646,6 +667,7 @@ export type Database = {
           key: string
           owner_id: string | null
           upload_signature: string
+          user_metadata: Json | null
           version: string
         }
         Insert: {
@@ -656,6 +678,7 @@ export type Database = {
           key: string
           owner_id?: string | null
           upload_signature: string
+          user_metadata?: Json | null
           version: string
         }
         Update: {
@@ -666,6 +689,7 @@ export type Database = {
           key?: string
           owner_id?: string | null
           upload_signature?: string
+          user_metadata?: Json | null
           version?: string
         }
         Relationships: [

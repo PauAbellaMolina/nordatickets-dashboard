@@ -83,7 +83,7 @@ export default function Home({ session }: { session: Session }) {
                   <option key={index} value={event.id}>{event.name}</option>
                 ))}
               </select>
-              <img src={ChevronDown} alt="chevron down" className="chevronDown" />
+              <img src={ChevronDown} alt="open dropdown select" className="chevronDown select" />
             </div>
           :
             <h1 className="eventTitle">{events[0]?.name}</h1>

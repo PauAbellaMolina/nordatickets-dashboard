@@ -39,11 +39,16 @@
 }
 
 .chevronDown {
-  font-size: 30px;
   filter: invert(1);
   position: relative;
-  transform: translate(-26px, 4px);
   z-index: -10;
+}
+.chevronDown.select {
+  transform: translate(-26px, 3px);
+}
+.chevronDown.small {
+  width: 20px;
+  height: 20px;
 }
 
 .settings {
