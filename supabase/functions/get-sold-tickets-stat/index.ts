@@ -54,7 +54,7 @@ Deno.serve(async (req) => {
     }
     statsCounts = statsCounts.map(stat => stat.key === 'following' ? { ...stat, data: count ?? 0 } : stat);
 
-    graphStats = getGraphStats(usedData, soldData);
+    graphStats = soldData.length || usedData.length ? getGraphStats(usedData, soldData) : [];
 
     return new Response(JSON.stringify([statsCounts, graphStats]), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
