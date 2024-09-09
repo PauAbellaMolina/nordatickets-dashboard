@@ -53,11 +53,12 @@ export default function EventStats({ event }: { event: Event | undefined }) {
   const [higherStat, setHigherStat] = useState<number>(0);
   const [isChartStatsOpen, setChartIsStatsOpen] = useState(false);
   const [ticketsTableData, setTicketsTableData] = useState<TicketsTableStruct>([]);
+  const [waitingForTableData, setWaitingForTableData] = useState(false);
   const [isTicketsTableOpen, setIsTicketsTableOpen] = useState(false);
   const [selectedFormSubmit, setSelectedFormSubmit] = useState<string[] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(25); // Should match the edge function default value
+  const [itemsPerPage] = useState(20); // Should match the edge function default value
   const [totalPages, setTotalPages] = useState(1);
 
   const { width } = useWindowDimensions();
@@ -113,6 +114,7 @@ export default function EventStats({ event }: { event: Event | undefined }) {
   };
 
   const getTicketsTableData = async (eventId: number, unmounted: boolean, page: number) => {
+    setWaitingForTableData(true);
     const { data, error } = await supabase.functions.invoke('get-tickets-table-data', {
       body: { eventId: eventId, page: page, itemsPerPage: itemsPerPage }
     });
@@ -121,6 +123,7 @@ export default function EventStats({ event }: { event: Event | undefined }) {
     setTicketsTableData(data.tickets);
     setTotalPages(data.totalPages);
     setCurrentPage(data.currentPage);
+    setWaitingForTableData(false);
   };
 
   const handleSelectedStat = (index: number) => {
@@ -164,6 +167,7 @@ export default function EventStats({ event }: { event: Event | undefined }) {
   };
 
   const handlePageChange = (newPage: number) => {
+    if (waitingForTableData) return;
     setCurrentPage(newPage);
   };
 
@@ -234,9 +238,20 @@ export default function EventStats({ event }: { event: Event | undefined }) {
             />
           </div>
           <Collapsible isOpen={isTicketsTableOpen}>
-            <div className="tableContainer">
+            <div className="tableContainer" style={{ position: 'relative' }}>
+              { waitingForTableData ? 
+                <div style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  zIndex: 1000
+                }}>
+                  <ActivityIndicator />
+                </div>
+              : null }
               { ticketsTableData.map((userData, userIndex) => (
-                <table key={`user-${userIndex}`} className="ticketsTable">
+                <table key={`user-${userIndex}`} className="ticketsTable" style={{ opacity: waitingForTableData ? 0.5 : 1, pointerEvents: waitingForTableData ? 'none' : 'auto' }}>
                   <tbody>
                     <tr className="user-row">
                       <td colSpan={5}>{userData.user_fullname} · {userData.user_email}</td>
@@ -269,7 +284,7 @@ export default function EventStats({ event }: { event: Event | undefined }) {
             {totalPages > 1 && (
               <div className="pagination">
                 {currentPage > 1 && (
-                  <button onClick={() => handlePageChange(currentPage - 1)}>
+                  <button className="previousNextButton" onClick={() => handlePageChange(currentPage - 1)}>
                     { i18n?.t("previous") }
                   </button>
                 )}
@@ -283,7 +298,7 @@ export default function EventStats({ event }: { event: Event | undefined }) {
                   </button>
                 ))}
                 {currentPage < totalPages && (
-                  <button onClick={() => handlePageChange(currentPage + 1)}>
+                  <button className="previousNextButton" onClick={() => handlePageChange(currentPage + 1)}>
                     { i18n?.t("next") }
                   </button>
                 )}

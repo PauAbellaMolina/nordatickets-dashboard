@@ -28,20 +28,19 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { eventId, page = 1, pageSize = 25 }: { eventId: number } & PaginationParams = await req.json();
+    const { eventId, page = 1, pageSize = 20 }: { eventId: number } & PaginationParams = await req.json();
     const supabase = createClient<Database>(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
 
-    const { data: wallet_tickets, error, count } = await supabase
+    const { data: wallet_tickets_ids, error: wallet_tickets_ids_error, count } = await supabase
       .from('wallet_tickets')
-      .select('id, order_id, user_id, event_tickets_name, price, ticket_form_submits_id, used_at', { count: 'exact' })
+      .select('id, order_id', { count: 'exact' })
       .eq('event_id', eventId)
-      .order('id', { ascending: true })
-      .range((page - 1) * pageSize, page * pageSize - 1);
-    if (error) {
-      throw new Error(error.message);
+      .order('id', { ascending: true });
+    if (wallet_tickets_ids_error) {
+      throw new Error(wallet_tickets_ids_error.message);
     }
 
     const { data: orders, error: ordersError } = await supabase
@@ -53,17 +52,33 @@ Deno.serve(async (req) => {
       throw new Error(ordersError.message);
     }
 
-    const filteredWalletTickets = wallet_tickets.filter(ticket => orders.some(order => order.order_id === ticket.order_id) || ticket.order_id === 'free');
+    const validOrderIds = new Set([...orders.map(order => order.order_id), 'free']);
+    const filteredWalletTicketsIds = wallet_tickets_ids
+      .filter(ticket => validOrderIds.has(ticket.order_id))
+      .map(ticket => ticket.id);
+
+    const filteredInvalidWalletTicketsIdsCount = wallet_tickets_ids.filter(ticket => !validOrderIds.has(ticket.order_id)).length;
+
+    const { data: wallet_tickets, error } = await supabase
+      .from('wallet_tickets')
+      .select('id, user_id, event_tickets_name, price, ticket_form_submits_id, used_at', { count: 'exact' })
+      .eq('event_id', eventId)
+      .in('id', filteredWalletTicketsIds)
+      .order('id', { ascending: true })
+      .range((page - 1) * pageSize, page * pageSize - 1);
+    if (error) {
+      throw new Error(error.message);
+    }
 
     const { data: formSubmits, error: formSubmitsError } = await supabase
       .from('ticket_form_submits')
       .select('id, entries')
-      .in('id', filteredWalletTickets.map(ticket => ticket.ticket_form_submits_id).filter(Boolean));
+      .in('id', wallet_tickets.map(ticket => ticket.ticket_form_submits_id).filter(Boolean));
     if (formSubmitsError) {
       throw new Error(formSubmitsError.message);
     }
     
-    const userIds = [...new Set(filteredWalletTickets.map(ticket => ticket.user_id))];
+    const userIds = [...new Set(wallet_tickets.map(ticket => ticket.user_id))];
     const { data: users, error: userError } = await supabase
       .from('users')
       .select('id, fullname')
@@ -72,7 +87,10 @@ Deno.serve(async (req) => {
       throw new Error(userError.message);
     }
     
-    const { data: authUsers, error: authUsersError } = await supabase.auth.admin.listUsers()
+    const { data: authUsers, error: authUsersError } = await supabase.auth.admin.listUsers({
+      perPage: 10000,
+      page: 1
+    })
     if (authUsersError) {
       throw new Error(authUsersError.message);
     }
@@ -84,7 +102,7 @@ Deno.serve(async (req) => {
     const ticketsTableStruct: TicketsTableStruct = [];
     const userIndexMap = new Map<string, number>();
 
-    for (const ticket of filteredWalletTickets) {
+    for (const ticket of wallet_tickets) {
       const userId = ticket.user_id ?? '';
       let userIndex = userIndexMap.get(userId);
 
@@ -109,9 +127,9 @@ Deno.serve(async (req) => {
 
     return new Response(JSON.stringify({ 
       tickets: ticketsTableStruct, 
-      totalCount: count ?? 0,
+      totalCount: count ? count - filteredInvalidWalletTicketsIdsCount : filteredInvalidWalletTicketsIdsCount,
       currentPage: page,
-      totalPages: Math.ceil((count ?? 0) / pageSize)
+      totalPages: Math.ceil((count ? count - filteredInvalidWalletTicketsIdsCount : filteredInvalidWalletTicketsIdsCount) / pageSize)
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200
