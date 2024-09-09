@@ -39,6 +39,12 @@ const TicketsSummaryTable: React.FC<TicketsSummaryTableProps> = ({ ticketsSummar
               <td>{ticket.revenue / 100}€</td>
             </tr>
           ))}
+          <tr>
+            <td></td>
+            <td></td>
+            <td style={{ fontWeight: 'bold', textAlign: 'right' }}>{i18n?.t("total")}</td>
+            <td style={{ fontWeight: 'bold' }}>{ticketsSummaryTableData.reduce((acc, curr) => acc + curr.revenue, 0) / 100}€</td>
+          </tr>
         </tbody>
       </table>
     </div>

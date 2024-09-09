@@ -38,5 +38,6 @@ export const ca: { [key: string]: string } = {
   clickToSee: 'Clica per veure',
   revenue: 'Facturació',
   quantitySold: 'Venuts',
-  quantityUsed: 'Utilitzats'
+  quantityUsed: 'Utilitzats',
+  total: 'Total'
 };

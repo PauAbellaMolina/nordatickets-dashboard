@@ -37,5 +37,6 @@ export const en: { [key: string]: string } = {
   clickToSee: 'Click to see',
   revenue: 'Revenue',
   quantitySold: 'Sold',
-  quantityUsed: 'Used'
+  quantityUsed: 'Used',
+  total: 'Total'
 };

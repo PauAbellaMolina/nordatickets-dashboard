@@ -38,5 +38,6 @@ export const es: { [key: string]: string } = {
   clickToSee: 'Click para ver',
   revenue: 'Facturación',
   quantitySold: 'Vendidos',
-  quantityUsed: 'Utilizados'
+  quantityUsed: 'Utilizados',
+  total: 'Total'
 };
