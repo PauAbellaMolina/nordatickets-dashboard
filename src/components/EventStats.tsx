@@ -74,6 +74,8 @@ export default function EventStats({ event }: { event: Event | undefined }) {
     setStats([]);
     setTicketsTableData([]);
     setHigherStat(0);
+    setCurrentPage(1);
+    setTotalPages(1);
     let unmounted = false;
 
     getStats(event.id, unmounted);
@@ -116,7 +118,7 @@ export default function EventStats({ event }: { event: Event | undefined }) {
   const getTicketsTableData = async (eventId: number, unmounted: boolean, page: number) => {
     setWaitingForTableData(true);
     const { data, error } = await supabase.functions.invoke('get-tickets-table-data', {
-      body: { eventId: eventId, page: page, itemsPerPage: itemsPerPage }
+      body: { eventId: eventId, page: page, pageSize: itemsPerPage }
     });
     if (error || unmounted) return;
 
@@ -240,13 +242,7 @@ export default function EventStats({ event }: { event: Event | undefined }) {
           <Collapsible isOpen={isTicketsTableOpen}>
             <div className="tableContainer" style={{ position: 'relative' }}>
               { waitingForTableData ? 
-                <div style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  zIndex: 1000
-                }}>
+                <div className="spinnerContainer">
                   <ActivityIndicator />
                 </div>
               : null }

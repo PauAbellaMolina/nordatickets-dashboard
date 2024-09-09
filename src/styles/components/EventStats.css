@@ -81,6 +81,14 @@
   margin-top: 20px;
 }
 
+.spinnerContainer {
+  position: absolute;
+  bottom: '25%';
+  left: '50%';
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+
 .ticketsTable {
   width: 100%;
   border-collapse: collapse;
@@ -144,7 +152,9 @@
 
 .pagination {
   display: flex;
-  justify-content: center;
+  justify-content: safe center;
+  overflow-x: auto;
+  scrollbar-width: none;
   margin-top: 20px;
 }
 
