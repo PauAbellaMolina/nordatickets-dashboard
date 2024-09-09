@@ -240,7 +240,7 @@ export default function EventStats({ event }: { event: Event | undefined }) {
             />
           </div>
           <Collapsible isOpen={isTicketsTableOpen}>
-            <div className="tableContainer" style={{ position: 'relative' }}>
+            <div className="tableContainer">
               { waitingForTableData ? 
                 <div className="spinnerContainer">
                   <ActivityIndicator />

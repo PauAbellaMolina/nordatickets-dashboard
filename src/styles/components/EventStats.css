@@ -77,14 +77,15 @@
 }
 
 .tableContainer {
+  position: relative;
   overflow-x: auto;
   margin-top: 20px;
 }
 
 .spinnerContainer {
   position: absolute;
-  bottom: '25%';
-  left: '50%';
+  bottom: 25%;
+  left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
 }
