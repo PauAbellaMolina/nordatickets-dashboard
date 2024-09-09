@@ -279,11 +279,9 @@ export default function EventStats({ event }: { event: Event | undefined }) {
             </div>
             {totalPages > 1 && (
               <div className="pagination">
-                {currentPage > 1 && (
-                  <button className="previousNextButton" onClick={() => handlePageChange(currentPage - 1)}>
-                    { i18n?.t("previous") }
-                  </button>
-                )}
+                <button className="previousNextButton" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                  { i18n?.t("previous") }
+                </button>
                 {[...Array(totalPages)].map((_, index) => (
                   <button
                     key={index}
@@ -293,11 +291,9 @@ export default function EventStats({ event }: { event: Event | undefined }) {
                     {index + 1}
                   </button>
                 ))}
-                {currentPage < totalPages && (
-                  <button className="previousNextButton" onClick={() => handlePageChange(currentPage + 1)}>
-                    { i18n?.t("next") }
-                  </button>
-                )}
+                <button className="previousNextButton" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+                  { i18n?.t("next") }
+                </button>
               </div>
             )}
           </Collapsible>
