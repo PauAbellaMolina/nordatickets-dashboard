@@ -18,7 +18,7 @@ export const es: { [key: string]: string } = {
   eventConfiguration: 'Configuración del evento',
   generalDeactivation: 'Canjeo general',
   generalSelling: 'Venta general',
-  accessTickets: 'Tickets de entrada',
+  accessTickets: 'Tickets de entrada/inscripción',
   deactivateGeneralTicketDeactivationConfirmationQuestion: '¿Estás seguro de que quieres desactivar el canjeo de TODOS los tickets?',
   deactivateGeneralTicketSellingConfirmationQuestion: '¿Estás seguro de que quieres desactivar la venta de TODOS los tickets?',
   deactivateGeneralAccessTicketConfirmationQuestion: '¿Estás seguro de que quieres desactivar la venta de TODOS los tickets de entrada?',
@@ -26,6 +26,7 @@ export const es: { [key: string]: string } = {
   deactivateTicketConfirmationQuestion: '¿Estás seguro de que quieres desactivar la venta de este ticket?',
   ticketsGraph: 'Gráfico de tickets',
   ticketsTable: 'Tabla de tickets',
+  ticketsSummaryTable: 'Resumen de tickets',
   id: 'Id',
   ticketName: 'Nombre del ticket',
   price: 'Precio',
@@ -34,5 +35,8 @@ export const es: { [key: string]: string } = {
   previous: 'Anterior',
   next: 'Siguiente',
   formSubmissionsDetail: 'Detalle de la respuesta',
-  clickToSee: 'Click para ver'
+  clickToSee: 'Click para ver',
+  revenue: 'Facturación',
+  quantitySold: 'Vendidos',
+  quantityUsed: 'Utilizados'
 };

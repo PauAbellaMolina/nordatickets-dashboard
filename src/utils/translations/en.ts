@@ -18,7 +18,7 @@ export const en: { [key: string]: string } = {
   eventConfiguration: 'Event configuration',
   generalDeactivation: 'General exchange',
   generalSelling: 'General selling',
-  accessTickets: 'Access tickets',
+  accessTickets: 'Access tickets/registration',
   deactivateGeneralTicketDeactivationConfirmationQuestion: 'Are you sure you want to deactivate ALL tickets exchanging?',
   deactivateGeneralTicketSellingConfirmationQuestion: 'Are you sure you want to deactivate ALL tickets selling?',
   deactivateGeneralAccessTicketConfirmationQuestion: 'Are you sure you want to deactivate ALL access tickets selling?',
@@ -34,5 +34,8 @@ export const en: { [key: string]: string } = {
   previous: 'Previous',
   next: 'Next',
   formSubmissionsDetail: 'Form submission detail',
-  clickToSee: 'Click to see'
+  clickToSee: 'Click to see',
+  revenue: 'Revenue',
+  quantitySold: 'Sold',
+  quantityUsed: 'Used'
 };

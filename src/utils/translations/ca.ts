@@ -18,7 +18,7 @@ export const ca: { [key: string]: string } = {
   eventConfiguration: 'Configuració de l\'esdeveniment',
   generalDeactivation: 'Bescanvi general',
   generalSelling: 'Venda general',
-  accessTickets: 'Tickets d\'entrada',
+  accessTickets: 'Tickets d\'entrada/inscripció',
   deactivateGeneralTicketDeactivationConfirmationQuestion: 'Estàs segur que vols desactivar el bescanvi de TOTS els tickets?',
   deactivateGeneralTicketSellingConfirmationQuestion: 'Estàs segur que vols desactivar la venda de TOTS els tickets?',
   deactivateGeneralAccessTicketConfirmationQuestion: 'Estàs segur que vols desactivar la venda de TOTS els tickets d\'entrada?',
@@ -26,6 +26,7 @@ export const ca: { [key: string]: string } = {
   deactivateTicketConfirmationQuestion: 'Estàs segur que vols desactivar la venda d\'aquest ticket?',
   ticketsGraph: 'Gràfic de tickets',
   ticketsTable: 'Taula de tickets',
+  ticketsSummaryTable: 'Resum de tickets',
   id: 'Id',
   ticketName: 'Nom del ticket',
   price: 'Preu',
@@ -34,5 +35,8 @@ export const ca: { [key: string]: string } = {
   previous: 'Anterior',
   next: 'Següent',
   formSubmissionsDetail: 'Detall de la resposta',
-  clickToSee: 'Clica per veure'
+  clickToSee: 'Clica per veure',
+  revenue: 'Facturació',
+  quantitySold: 'Venuts',
+  quantityUsed: 'Utilitzats'
 };
