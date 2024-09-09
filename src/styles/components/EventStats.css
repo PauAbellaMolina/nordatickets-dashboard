@@ -84,7 +84,7 @@
 
 .spinnerContainer {
   position: absolute;
-  bottom: 200px;
+  bottom: 20%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
