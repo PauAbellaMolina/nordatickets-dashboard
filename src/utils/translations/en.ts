@@ -26,6 +26,7 @@ export const en: { [key: string]: string } = {
   deactivateTicketConfirmationQuestion: 'Are you sure you want to deactivate this ticket selling?',
   ticketsGraph: 'Tickets graph',
   ticketsTable: 'Tickets table',
+  ticketsSummaryTable: 'Tickets summary',
   id: 'Id',
   ticketName: 'Ticket name',
   price: 'Price',
