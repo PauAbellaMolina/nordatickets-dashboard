@@ -4,6 +4,7 @@
   width: calc(100dvw - 30px);
   padding: 10px 15px 15px;
   overflow-y: overlay;
+  overflow-x: hidden;
 }
 
 .logo {
