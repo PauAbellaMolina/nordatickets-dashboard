@@ -3,7 +3,6 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { supabase } from '../supabase'
 import { Event } from '../types/supabaseplain';
 import { Session } from '@supabase/supabase-js';
-import { ActivityIndicator } from './components/ActivityIndicator';
 import EventStats from './components/EventStats';
 import ChevronDown from './assets/chevron-down.svg';
 import Settings from './assets/settings.svg';
@@ -11,6 +10,8 @@ import BarChart from './assets/bar-chart.svg';
 import { useLanguageProvider } from './utils/LanguageProvider';
 import { AvailableLocales } from './utils/translations/translation';
 import EventConfig from './components/EventConfig';
+import TiktLogo from './assets/tikt-logo.svg';
+import Logout from './assets/logout.svg';
 
 export default function Home({ session }: { session: Session }) {
   const { i18n, setLanguage } = useLanguageProvider();
@@ -73,7 +74,9 @@ export default function Home({ session }: { session: Session }) {
   return (
     <div className="homeContainer">
       { !events ?
-        <ActivityIndicator />
+        <div className="homeSplashContainer">
+          <img src={TiktLogo} alt="logo icon" className="tiktLogo" />
+        </div>
       : <>
         <div className="headerContainer">
           { events.length > 1 ? 
@@ -97,12 +100,17 @@ export default function Home({ session }: { session: Session }) {
           <EventStats event={events.find(event => event.id === selectedEvent?.id)} />
         </div>
       </> }
-      <select className="langSelect" value={selectedLanguage} onChange={(e: ChangeEvent<HTMLSelectElement>) => onSelectedLanguage(e)}>
-        <option value="ca">Català</option>
-        <option value="es">Castellano</option>
-        <option value="en">English</option>
-      </select>
-      <button className="signOutButton" onClick={() => supabase.auth.signOut()}>{ i18n?.t('logOut') }</button>
+      <div className="footerContainer">
+        <select className="langSelect" value={selectedLanguage} onChange={(e: ChangeEvent<HTMLSelectElement>) => onSelectedLanguage(e)}>
+          <option value="ca">Català</option>
+          <option value="es">Castellano</option>
+          <option value="en">English</option>
+        </select>
+        <button className="signOutButton" onClick={() => supabase.auth.signOut()}>
+          <img src={Logout} alt="logout" className="logout" />
+          { i18n?.t('logOut') }
+        </button>
+      </div>
     </div>
   );
 }

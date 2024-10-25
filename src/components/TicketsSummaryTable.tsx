@@ -23,7 +23,7 @@ const TicketsSummaryTable: React.FC<TicketsSummaryTableProps> = ({ ticketsSummar
           <ActivityIndicator />
         </div>
       : null}
-      <table className="ticketsTable" style={{ opacity: waitingForTableData ? 0.5 : 1, pointerEvents: waitingForTableData ? 'none' : 'auto' }}>
+      <table className="ticketsSummaryTable" style={{ opacity: waitingForTableData ? 0.5 : 1, pointerEvents: waitingForTableData ? 'none' : 'auto' }}>
         <tbody>
           <tr className="header-row">
             <td>{i18n?.t("ticketName")}</td>
@@ -34,16 +34,16 @@ const TicketsSummaryTable: React.FC<TicketsSummaryTableProps> = ({ ticketsSummar
           {ticketsSummaryTableData.map((ticket, index) => (
             <tr key={index}>
               <td>{ticket.event_tickets_name}</td>
-              <td>{ticket.quantitySold}</td>
-              <td>{ticket.quantityUsed}</td>
-              <td>{ticket.revenue / 100}€</td>
+              <td className="centerAligned">{ticket.quantitySold}</td>
+              <td className="centerAligned">{ticket.quantityUsed}</td>
+              <td className="rightAligned">{ticket.revenue / 100}€</td>
             </tr>
           ))}
           <tr>
-            <td></td>
-            <td></td>
-            <td style={{ fontWeight: 'bold', textAlign: 'right' }}>{i18n?.t("total")}</td>
-            <td style={{ fontWeight: 'bold' }}>{ticketsSummaryTableData.reduce((acc, curr) => acc + curr.revenue, 0) / 100}€</td>
+            <td colSpan={4} style={{ fontWeight: 'bold' }}  className="rightAligned">
+              <span style={{ fontWeight: 'bold', fontSize: '12px' }}>{i18n?.t("total")}:</span><br/>
+              {ticketsSummaryTableData.reduce((acc, curr) => acc + curr.revenue, 0) / 100}€
+            </td>
           </tr>
         </tbody>
       </table>

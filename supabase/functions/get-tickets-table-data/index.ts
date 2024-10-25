@@ -28,7 +28,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { eventId, page = 1, pageSize = 20 }: { eventId: number } & PaginationParams = await req.json();
+    const { eventId, page = 1, pageSize = 10 }: { eventId: number } & PaginationParams = await req.json();
     const supabase = createClient<Database>(
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
@@ -38,7 +38,7 @@ Deno.serve(async (req) => {
       .from('wallet_tickets')
       .select('id, order_id', { count: 'exact' })
       .eq('event_id', eventId)
-      .order('id', { ascending: true });
+      .order('id', { ascending: false });
     if (wallet_tickets_ids_error) {
       throw new Error(wallet_tickets_ids_error.message);
     }
@@ -64,7 +64,7 @@ Deno.serve(async (req) => {
       .select('id, user_id, event_tickets_name, price, ticket_form_submits_id, used_at', { count: 'exact' })
       .eq('event_id', eventId)
       .in('id', filteredWalletTicketsIds)
-      .order('id', { ascending: true })
+      .order('id', { ascending: false })
       .range((page - 1) * pageSize, page * pageSize - 1);
     if (error) {
       throw new Error(error.message);

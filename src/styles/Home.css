@@ -4,6 +4,17 @@
   width: inherit;
 }
 
+.homeSplashContainer {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.homeSplashContainer .tiktLogo {
+  width: 125px;
+  height: 125px;
+}
+
 .headerContainer {
   display: grid;
   grid-auto-flow: column;
@@ -46,10 +57,6 @@
 .chevronDown.select {
   transform: translate(-26px, 3px);
 }
-.chevronDown.small {
-  width: 20px;
-  height: 20px;
-}
 
 .settings {
   font-size: 30px;
@@ -68,28 +75,41 @@
   font-style: italic;
 }
 
+.footerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
 .signOutButton {
   width: max-content;
   border-radius: 10px;
-  padding: 0.5em 1em;
-  margin-top: 10px;
+  padding: 3px 8px;
   border: 1px solid transparent;
-  font-size: 1em;
+  font-size: .9em;
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
   color: text;
   cursor: pointer;
   transition: border-color 0.25s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.signOutButton > .logout {
+  filter: invert(1);
+  width: 13px;
+  height: 13px;
 }
 
 .langSelect {
   width: max-content;
   border-radius: 10px;
-  padding: 0.5em 1em;
-  margin-top: 50px;
+  padding: 3px 10px;
   border: 1px solid transparent;
-  font-size: 1em;
+  font-size: .9em;
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;

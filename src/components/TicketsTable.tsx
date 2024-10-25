@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActivityIndicator } from './ActivityIndicator';
 import { I18n } from 'i18n-js';
-
+import EyeIcon from '../assets/eye.svg';
 type TicketsTableStruct = {
   user_fullname: string;
   user_email: string;
@@ -45,27 +45,30 @@ const TicketsTable: React.FC<TicketsTableProps> = ({
           <table key={`user-${userIndex}`} className="ticketsTable" style={{ opacity: waitingForTableData ? 0.5 : 1, pointerEvents: waitingForTableData ? 'none' : 'auto' }}>
             <tbody>
               <tr className="user-row">
-                <td colSpan={5}>{userData.user_fullname} · {userData.user_email}</td>
+                <td colSpan={4}>
+                  {userData.user_fullname}
+                  <br/>
+                  {userData.user_email}
+                </td>
               </tr>
               <tr className="header-row">
                 <td className="small-row">{i18n?.t("id")}</td>
                 <td>{i18n?.t("ticketName")}</td>
                 <td>{i18n?.t("price")}</td>
                 <td>{i18n?.t("deactivatedAt")}</td>
-                <td>{i18n?.t("formSubmissions")}</td>
               </tr>
               {userData.tickets.map((ticket, ticketIndex) => (
                 <tr key={`${userIndex}-${ticketIndex}`}>
-                  <td className="small-row">{ticket.id}</td>
+                  <td className="small-row centerAligned">{ticket.id}</td>
                   <td>{ticket.event_tickets_name}</td>
-                  <td>{ticket.price / 100}€</td>
-                  <td>{ticket.used_at ? new Date(ticket.used_at).toLocaleString('es-ES', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' }).replace(',', '') : '-'}</td>
-                  <td 
-                    onClick={() => ticket.ticket_form_submit.length ? handleFormSubmitClick(ticket.ticket_form_submit) : null}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    {ticket.ticket_form_submit.length ? i18n?.t("clickToSee") : '-'}
-                  </td>
+                  <td className="rightAligned">{ticket.price / 100}€</td>
+                  <td className="centerAligned">{ticket.used_at ? new Date(ticket.used_at).getFullYear() === 1970 ? i18n?.t("expired") : new Date(ticket.used_at).toLocaleString('es-ES', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: '2-digit' }).split(' ').reverse().join(' ').replace(/,$/, '') : '-'}</td>
+                  { ticket.ticket_form_submit.length ?
+                    <td onClick={() => handleFormSubmitClick(ticket.ticket_form_submit)} style={{ cursor: 'pointer', display: 'flex', gap: '5px', alignItems: 'center' }}>
+                      <img src={EyeIcon} alt="eye icon" className="eyeIcon small" />
+                      {i18n?.t("formSubmissions")}
+                    </td>
+                  : null }
                 </tr>
               ))}
             </tbody>
