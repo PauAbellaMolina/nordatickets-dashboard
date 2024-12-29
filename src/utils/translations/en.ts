@@ -12,7 +12,7 @@ export const en: { [key: string]: string } = {
   usersFollowingEvent: 'Users following the event',
   yourOneTimeCode: 'Your one-time code',
   yourOneTimeCodeGreeting: 'Hello! This is your one-time code:',
-  yourOneTimeCodeExplanation: 'Use this code to log into ElTeuTikt',
+  yourOneTimeCodeExplanation: 'Use this code to log into Norda Tickets',
   deactivateSelling: 'Deactivate selling',
   activateSelling: 'Activate selling',
   eventConfiguration: 'Event configuration',
