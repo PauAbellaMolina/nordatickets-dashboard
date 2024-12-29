@@ -10,7 +10,7 @@ import BarChart from './assets/bar-chart.svg';
 import { useLanguageProvider } from './utils/LanguageProvider';
 import { AvailableLocales } from './utils/translations/translation';
 import EventConfig from './components/EventConfig';
-import TiktLogo from './assets/tikt-logo.svg';
+import TicketLogo from './assets/ticket-logo.svg';
 import Logout from './assets/logout.svg';
 
 export default function Home({ session }: { session: Session }) {
@@ -75,7 +75,7 @@ export default function Home({ session }: { session: Session }) {
     <div className="homeContainer">
       { !events ?
         <div className="homeSplashContainer">
-          <img src={TiktLogo} alt="logo icon" className="tiktLogo" />
+          <img src={TicketLogo} alt="logo icon" className="ticketLogo" />
         </div>
       : <>
         <div className="headerContainer">

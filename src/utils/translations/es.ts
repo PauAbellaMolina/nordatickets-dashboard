@@ -12,7 +12,7 @@ export const es: { [key: string]: string } = {
   usersFollowingEvent: 'Usuarios siguiendo el evento',
   yourOneTimeCode: 'Tu código de un solo uso',
   yourOneTimeCodeGreeting: '¡Hola! Este es tu código de un solo uso:',
-  yourOneTimeCodeExplanation: 'Usa este código para iniciar sesión en ElTeuTikt',
+  yourOneTimeCodeExplanation: 'Usa este código para iniciar sesión en Norda Tickets',
   deactivateSelling: 'Desactivar venta',
   activateSelling: 'Activar venta',
   eventConfiguration: 'Configuración del evento',
