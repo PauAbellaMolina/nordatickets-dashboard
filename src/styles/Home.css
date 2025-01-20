@@ -31,6 +31,23 @@
   flex-wrap: nowrap;
 }
 
+.iconsContainer {
+  display: flex;
+  gap: 18px;
+}
+
+.scannerContainer {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: 25px;
+  margin: 35px 0;
+}
+
+.scannerContainer svg {
+  display: none;
+}
+
 .eventSelect {
   appearance: none;
   -webkit-appearance: none;
@@ -58,8 +75,8 @@
   transform: translate(-26px, 3px);
 }
 
-.settings {
-  font-size: 30px;
+.icon {
+  width: 25px;
   filter: invert(1);
   position: relative;
 }
@@ -139,6 +156,6 @@
 
 @media (max-width: 576px) {
   .eventSelect {
-    max-width: 80dvw;
+    max-width: 70dvw;
   }
 }
