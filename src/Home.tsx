@@ -4,12 +4,14 @@ import { supabase } from '../supabase'
 import { Event } from '../types/supabaseplain';
 import { Session } from '@supabase/supabase-js';
 import EventStats from './components/EventStats';
+import EventConfig from './components/EventConfig';
+import EventScanner from './components/EventScanner';
 import ChevronDown from './assets/chevron-down.svg';
 import Settings from './assets/settings.svg';
 import BarChart from './assets/bar-chart.svg';
+import Camera from './assets/camera.svg';
 import { useLanguageProvider } from './utils/LanguageProvider';
 import { AvailableLocales } from './utils/translations/translation';
-import EventConfig from './components/EventConfig';
 import TicketLogo from './assets/ticket-logo.svg';
 import Logout from './assets/logout.svg';
 
@@ -20,7 +22,7 @@ export default function Home({ session }: { session: Session }) {
   const [events, setEvents] = useState<Event[] | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<{ id: number, name: string } | null>(null);
   const [selectedLanguage, setSelectedLanguage] = useState<AvailableLocales>();
-  const [configMode, setConfigMode] = useState<boolean>(false);
+  const [screenMode, setScreenMode] = useState<'st' | 'co' | 'sc'>('st');
 
   useEffect(() => {
     setSelectedLanguage(i18n?.locale as AvailableLocales);
@@ -61,8 +63,12 @@ export default function Home({ session }: { session: Session }) {
   };
 
   const onClickSettings = () => {
-    setConfigMode(!configMode);
-  }
+    setScreenMode(screenMode === 'co' || screenMode === 'sc' ? 'st' : 'co');
+  };
+
+  const onClickCamera = () => {
+    setScreenMode('sc');
+  };
 
   const onSelectedLanguage = (e: ChangeEvent<HTMLSelectElement>) => {
     if (!i18n) return;
@@ -91,14 +97,24 @@ export default function Home({ session }: { session: Session }) {
           :
             <h1 className="eventTitle">{events[0]?.name}</h1>
           }
-          <img src={!configMode ? Settings : BarChart} alt="settings" className="settings" onClick={onClickSettings} />
+          <div className="iconsContainer">
+            { screenMode === 'st' || screenMode === 'co' ?
+              <img src={Camera} alt="camera" className="icon" onClick={onClickCamera} />
+            : null }
+            <img src={screenMode === 'st' ? Settings : BarChart} alt="settings" className="icon" onClick={onClickSettings} />
+          </div>
         </div>
-        <div style={{height: '100%', display: configMode ? 'unset' : 'none'}}>
+        <div style={{height: '100%', display: screenMode === 'co' ? 'unset' : 'none'}}>
           <EventConfig event_id={events.find(event => event.id === selectedEvent?.id)?.id} />
         </div>
-        <div style={{height: '100%', display: configMode ? 'none' : 'unset'}}>
+        <div style={{height: '100%', display: screenMode === 'st' ? 'unset' : 'none'}}>
           <EventStats event={events.find(event => event.id === selectedEvent?.id)} />
         </div>
+        { screenMode === 'sc' ?
+          <div style={{height: '100%'}}>
+            <EventScanner event_id={events.find(event => event.id === selectedEvent?.id)?.id} />
+          </div>
+        : null }
       </> }
       <div className="footerContainer">
         <select className="langSelect" value={selectedLanguage} onChange={(e: ChangeEvent<HTMLSelectElement>) => onSelectedLanguage(e)}>

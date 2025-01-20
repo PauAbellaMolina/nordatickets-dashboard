@@ -6,7 +6,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export type Database = {
+export interface Database {
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -75,11 +75,14 @@ export type Database = {
       }
       event_tickets: {
         Row: {
+          additional_info: string | null
           buy_includes_event_tickets_ids: number[] | null
           color_code_dark: string | null
           color_code_light: string | null
+          conditions_notice: string | null
           created_at: string
           description: string | null
+          email_qr_pdf: boolean
           event_id: number | null
           hide_from_event_page: boolean
           id: number
@@ -87,16 +90,23 @@ export type Database = {
           minor_restricted: boolean
           name: string | null
           price: number | null
+          purchased_additional_info: string | null
+          purchased_conditions_notice: string | null
           selling: boolean
+          strikethrough_price: number | null
           ticket_form_templates_id: number | null
           type: Database["public"]["Enums"]["event_ticket_type"]
+          wallet_tickets_limit: number | null
         }
         Insert: {
+          additional_info?: string | null
           buy_includes_event_tickets_ids?: number[] | null
           color_code_dark?: string | null
           color_code_light?: string | null
+          conditions_notice?: string | null
           created_at?: string
           description?: string | null
+          email_qr_pdf?: boolean
           event_id?: number | null
           hide_from_event_page?: boolean
           id?: number
@@ -104,16 +114,23 @@ export type Database = {
           minor_restricted?: boolean
           name?: string | null
           price?: number | null
+          purchased_additional_info?: string | null
+          purchased_conditions_notice?: string | null
           selling?: boolean
+          strikethrough_price?: number | null
           ticket_form_templates_id?: number | null
           type?: Database["public"]["Enums"]["event_ticket_type"]
+          wallet_tickets_limit?: number | null
         }
         Update: {
+          additional_info?: string | null
           buy_includes_event_tickets_ids?: number[] | null
           color_code_dark?: string | null
           color_code_light?: string | null
+          conditions_notice?: string | null
           created_at?: string
           description?: string | null
+          email_qr_pdf?: boolean
           event_id?: number | null
           hide_from_event_page?: boolean
           id?: number
@@ -121,9 +138,13 @@ export type Database = {
           minor_restricted?: boolean
           name?: string | null
           price?: number | null
+          purchased_additional_info?: string | null
+          purchased_conditions_notice?: string | null
           selling?: boolean
+          strikethrough_price?: number | null
           ticket_form_templates_id?: number | null
           type?: Database["public"]["Enums"]["event_ticket_type"]
+          wallet_tickets_limit?: number | null
         }
         Relationships: [
           {
@@ -132,55 +153,73 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "events"
             referencedColumns: ["id"]
-          },
+          }
         ]
       }
       events: {
         Row: {
           access_tickets_section_expanded: boolean
           access_tickets_section_title: string | null
+          age_required: number | null
           color_code_dark: string | null
           color_code_light: string | null
+          consumable_tickets_section_expanded: boolean
+          consumable_tickets_section_title: string | null
           created_at: string
           description: string | null
           id: number
+          location: string | null
           more_info_content: string | null
           name: string | null
           organizer_email: string | null
           selling: boolean
           selling_access: boolean
+          slug: string
+          start_date: string | null
           ticket_fee: number | null
           tickets_deactivable: boolean
         }
         Insert: {
           access_tickets_section_expanded?: boolean
           access_tickets_section_title?: string | null
+          age_required?: number | null
           color_code_dark?: string | null
           color_code_light?: string | null
+          consumable_tickets_section_expanded?: boolean
+          consumable_tickets_section_title?: string | null
           created_at?: string
           description?: string | null
           id?: number
+          location?: string | null
           more_info_content?: string | null
           name?: string | null
           organizer_email?: string | null
           selling?: boolean
           selling_access?: boolean
+          slug?: string
+          start_date?: string | null
           ticket_fee?: number | null
           tickets_deactivable?: boolean
         }
         Update: {
           access_tickets_section_expanded?: boolean
           access_tickets_section_title?: string | null
+          age_required?: number | null
           color_code_dark?: string | null
           color_code_light?: string | null
+          consumable_tickets_section_expanded?: boolean
+          consumable_tickets_section_title?: string | null
           created_at?: string
           description?: string | null
           id?: number
+          location?: string | null
           more_info_content?: string | null
           name?: string | null
           organizer_email?: string | null
           selling?: boolean
           selling_access?: boolean
+          slug?: string
+          start_date?: string | null
           ticket_fee?: number | null
           tickets_deactivable?: boolean
         }
@@ -264,7 +303,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
-          },
+          }
         ]
       }
       ticket_form_submits: {
@@ -299,7 +338,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
-          },
+          }
         ]
       }
       ticket_form_templates: {
@@ -403,19 +442,24 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
-          },
+          }
         ]
       }
       wallet_tickets: {
         Row: {
           created_at: string
+          email_qr_pdf: boolean
           event_id: number | null
           event_tickets_id: number | null
           event_tickets_name: string | null
+          event_tickets_purchased_additional_info: string | null
+          event_tickets_purchased_conditions_notice: string | null
           id: number
           iva: number
           order_id: string
           price: number | null
+          refunded_at: string | null
+          refunded_partial_price: number | null
           ticket_form_submits_id: number | null
           type: Database["public"]["Enums"]["event_ticket_type"]
           used_at: string | null
@@ -424,13 +468,18 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          email_qr_pdf?: boolean
           event_id?: number | null
           event_tickets_id?: number | null
           event_tickets_name?: string | null
+          event_tickets_purchased_additional_info?: string | null
+          event_tickets_purchased_conditions_notice?: string | null
           id?: number
           iva?: number
           order_id: string
           price?: number | null
+          refunded_at?: string | null
+          refunded_partial_price?: number | null
           ticket_form_submits_id?: number | null
           type?: Database["public"]["Enums"]["event_ticket_type"]
           used_at?: string | null
@@ -439,13 +488,18 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          email_qr_pdf?: boolean
           event_id?: number | null
           event_tickets_id?: number | null
           event_tickets_name?: string | null
+          event_tickets_purchased_additional_info?: string | null
+          event_tickets_purchased_conditions_notice?: string | null
           id?: number
           iva?: number
           order_id?: string
           price?: number | null
+          refunded_at?: string | null
+          refunded_partial_price?: number | null
           ticket_form_submits_id?: number | null
           type?: Database["public"]["Enums"]["event_ticket_type"]
           used_at?: string | null
@@ -480,7 +534,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
-          },
+          }
         ]
       }
     }
@@ -488,6 +542,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      count_wallet_tickets_by_event_tickets_id: {
+        Args: {
+          p_event_tickets_id: number
+        }
+        Returns: number
+      }
       delete_secret: {
         Args: {
           secret_name: string
@@ -519,11 +579,19 @@ export type Database = {
         }
         Returns: string
       }
+      update_wallet_tickets_used_at: {
+        Args: {
+          req_user_id: string
+          wallet_tickets_id: number
+          addon_id: number
+        }
+        Returns: string
+      }
       user_email_by_id: {
         Args: {
           user_id: string
         }
-        Returns: string
+        Returns: Record<string, unknown>
       }
     }
     Enums: {
@@ -540,7 +608,10 @@ export type Database = {
         | "OPTIONS"
     }
     CompositeTypes: {
-      [_ in never]: never
+      user_email_lang: {
+        email: string
+        lang: string
+      }
     }
   }
   storage: {
@@ -655,7 +726,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "buckets"
             referencedColumns: ["id"]
-          },
+          }
         ]
       }
       s3_multipart_uploads: {
@@ -699,7 +770,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "buckets"
             referencedColumns: ["id"]
-          },
+          }
         ]
       }
       s3_multipart_uploads_parts: {
@@ -753,7 +824,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "s3_multipart_uploads"
             referencedColumns: ["id"]
-          },
+          }
         ]
       }
     }
@@ -786,7 +857,7 @@ export type Database = {
         Args: {
           name: string
         }
-        Returns: string[]
+        Returns: unknown
       }
       get_size_by_bucket: {
         Args: Record<PropertyKey, never>
@@ -860,16 +931,14 @@ export type Database = {
   }
 }
 
-type PublicSchema = Database[Extract<keyof Database, "public">]
-
 export type Tables<
   PublicTableNameOrOptions extends
-    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
+    | keyof (Database["public"]["Tables"] & Database["public"]["Views"])
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
         Database[PublicTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never = never
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
@@ -877,67 +946,68 @@ export type Tables<
     }
     ? R
     : never
-  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
-        PublicSchema["Views"])
-    ? (PublicSchema["Tables"] &
-        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-        Row: infer R
-      }
-      ? R
-      : never
+  : PublicTableNameOrOptions extends keyof (Database["public"]["Tables"] &
+      Database["public"]["Views"])
+  ? (Database["public"]["Tables"] &
+      Database["public"]["Views"])[PublicTableNameOrOptions] extends {
+      Row: infer R
+    }
+    ? R
     : never
+  : never
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
-    | keyof PublicSchema["Tables"]
+    | keyof Database["public"]["Tables"]
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never = never
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Insert: infer I
-      }
-      ? I
-      : never
+  : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
+  ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
+      Insert: infer I
+    }
+    ? I
     : never
+  : never
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
-    | keyof PublicSchema["Tables"]
+    | keyof Database["public"]["Tables"]
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never = never
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Update: infer U
-      }
-      ? U
-      : never
+  : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
+  ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
+      Update: infer U
+    }
+    ? U
     : never
+  : never
 
 export type Enums<
   PublicEnumNameOrOptions extends
-    | keyof PublicSchema["Enums"]
+    | keyof Database["public"]["Enums"]
     | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+    : never = never
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
-    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
-    : never
+  : PublicEnumNameOrOptions extends keyof Database["public"]["Enums"]
+  ? Database["public"]["Enums"][PublicEnumNameOrOptions]
+  : never
+
