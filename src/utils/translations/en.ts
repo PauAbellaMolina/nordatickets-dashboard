@@ -1,4 +1,8 @@
 export const en: { [key: string]: string } = {
+  days: 'days',
+  hours: 'hours',
+  minutes: 'minutes',
+  seconds: 'seconds',
   tryAgain: 'Try again',
   logIn: 'Log in',
   logOut: 'Log out',
@@ -40,5 +44,6 @@ export const en: { [key: string]: string } = {
   quantitySold: 'Sold',
   quantityUsed: 'Used',
   total: 'Total',
-  expired: 'Expired'
+  expired: 'Expired',
+  scanningTicket: 'Scanning ticket'
 };

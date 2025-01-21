@@ -36,18 +36,6 @@
   gap: 18px;
 }
 
-.scannerContainer {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  gap: 25px;
-  margin: 35px 0;
-}
-
-.scannerContainer svg {
-  display: none;
-}
-
 .eventSelect {
   appearance: none;
   -webkit-appearance: none;

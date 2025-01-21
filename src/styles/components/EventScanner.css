@@ -1,0 +1,76 @@
+.scannerContainer {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: 25px;
+  margin: 35px 0;
+  width: 100%;
+}
+
+.scannerContainer svg {
+  display: none;
+}
+
+.scanningContainer {
+  display: flex;
+  flex-flow: row;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.scanningContainer h2 {
+  margin: 0;
+}
+
+.loaderDots {
+  margin-bottom: 6px;
+  width: 25px;
+  aspect-ratio: 5.5;
+  --_g: no-repeat radial-gradient(circle closest-side,#fff 90%,#0000);
+  background: 
+    var(--_g) 0%   50%,
+    var(--_g) 50%  50%,
+    var(--_g) 100% 50%;
+  background-size: calc(100%/3) 100%;
+  animation: l7 1.3s infinite linear;
+}
+@keyframes l7 {
+  25%{background-size:calc(100%/3) 0%  ,calc(100%/3) 100%,calc(100%/3) 100%}
+  50%{background-size:calc(100%/3) 100%,calc(100%/3) 0%  ,calc(100%/3) 100%}
+  75%{background-size:calc(100%/3) 100%,calc(100%/3) 100%,calc(100%/3) 0%  }
+}
+
+.scannedContainer {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.scannedContainer h2 {
+  margin: 0;
+}
+
+.walletTicketInfoContainer {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.button {
+  border-radius: 25px;
+  padding: 50px 25px;
+  width: 80dvw;
+  max-width: 400px;
+  background-color: #FCFCFC;
+}
+.buttonText {
+  font-weight: 500;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  color: #202228;
+}
