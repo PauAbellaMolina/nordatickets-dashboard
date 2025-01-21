@@ -1,4 +1,8 @@
 export const ca: { [key: string]: string } = {
+  days: 'dies',
+  hours: 'hores',
+  minutes: 'minuts',
+  seconds: 'segons',
   tryAgain: 'Torna-ho a intentar',
   logIn: 'Iniciar sessió',
   logOut: 'Tancar sessió',
@@ -40,5 +44,6 @@ export const ca: { [key: string]: string } = {
   quantitySold: 'Venuts',
   quantityUsed: 'Utilitzats',
   total: 'Total',
-  expired: 'Caducat'
+  expired: 'Caducat',
+  scanningTicket: 'Escanejant ticket'
 };
