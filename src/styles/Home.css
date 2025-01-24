@@ -140,6 +140,12 @@
     background-color: #eeeeee;
     color: #1a1a1a;
   }
+  .signOutButton > .logout {
+    filter: unset;
+  }
+  .icon {
+    filter: unset;
+  }
 }
 
 @media (max-width: 576px) {

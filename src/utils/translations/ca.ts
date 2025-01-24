@@ -45,5 +45,10 @@ export const ca: { [key: string]: string } = {
   quantityUsed: 'Utilitzats',
   total: 'Total',
   expired: 'Caducat',
-  scanningTicket: 'Escanejant ticket'
+  scanningTicket: 'Escanejant ticket',
+  active: 'Ticket ACTIU',
+  deactivated: 'Ticket DESACTIVAT fa',
+  newScan: 'Nou escaneig',
+  deactivate: 'Desactivar',
+  reactivate: 'Reactivar'
 };

@@ -45,5 +45,10 @@ export const en: { [key: string]: string } = {
   quantityUsed: 'Used',
   total: 'Total',
   expired: 'Expired',
-  scanningTicket: 'Scanning ticket'
+  scanningTicket: 'Scanning ticket',
+  active: 'Ticket ACTIVE',
+  deactivated: 'Ticket DEACTIVATED for',
+  newScan: 'New scan',
+  deactivate: 'Deactivate',
+  reactivate: 'Reactivate'
 };

@@ -579,6 +579,13 @@ export interface Database {
         }
         Returns: string
       }
+      remove_wallet_tickets_used_at: {
+        Args: {
+          req_user_id: string
+          wallet_tickets_id: number
+        }
+        Returns: boolean
+      }
       update_wallet_tickets_used_at: {
         Args: {
           req_user_id: string
