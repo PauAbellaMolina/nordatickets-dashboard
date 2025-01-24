@@ -5,7 +5,7 @@ import { IDetectedBarcode, Scanner } from '@yudiel/react-qr-scanner';
 import { ActivityIndicator } from './ActivityIndicator';
 import { supabase } from '../../supabase';
 import { WalletTicket } from '../../types/supabaseplain';
-import { User } from '@supabase/supabase-js';
+import Camera from '../assets/camera.svg';
 
 export default function EventScanner({ event_id }: { event_id: number | undefined }) {
   const { i18n } = useLanguageProvider();
@@ -14,7 +14,7 @@ export default function EventScanner({ event_id }: { event_id: number | undefine
   const [walletTicket, setWalletTicket] = useState<WalletTicket | null>(null);
   const [ticketUsedAt, setTicketUsedAt] = useState<string | null>(null);
   const [ticketUsedTimeAgo, setTicketUsedTimeAgo] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false); //TODO PAU use spinners while loading
 
   useEffect(() => {
     if (!scannedId) return;
@@ -26,8 +26,10 @@ export default function EventScanner({ event_id }: { event_id: number | undefine
 
     supabase.from('wallet_tickets').select().eq('id', walletTicketId).eq('user_id', userId).eq('order_id', orderId).eq('event_tickets_id', eventTicketsId).single()
     .then(({ data: wallet_ticket, error }) => {
-      if (error) return; //TODO PAU handle error
-      console.log("wallet_ticket", wallet_ticket);
+      if (error || event_id != wallet_ticket.event_id) {
+        onNewScan(); //TODO PAU inform about error
+        return;
+      };
       setWalletTicket(wallet_ticket);
       setTicketUsedAt(wallet_ticket.used_at);
     });
@@ -68,20 +70,21 @@ export default function EventScanner({ event_id }: { event_id: number | undefine
   };
   
   const handleScan = (data: IDetectedBarcode[]) => {
-    console.log("handleScann", data);
-    if (data) { //TODO PAU handle error
-      setScannedId(data[0].rawValue);
-      // setScannedId('1008yb1Otpd1_0528d00f-055a-4fde-8801-04510a3575c1_103_10'); //JUST FOR DEVING
+    if (!data) {
+      onNewScan();
+      return;
     }
+    setScannedId(data[0].rawValue);
   };
 
   const handleError = (err: any) => {
     console.error(err); //TODO PAU handle error
+    onNewScan();
   };
 
   const deactivateWalletTicket = () => {
-    console.log("deactivateWalletTicket");
     if (!walletTicket?.user_id) return;
+    setLoading(true);
     supabase.rpc('update_wallet_tickets_used_at', { req_user_id: walletTicket.user_id, wallet_tickets_id: walletTicket.id, addon_id: null })
     .then(({ data: usedAt }) => {
       if (!usedAt) return;
@@ -90,56 +93,99 @@ export default function EventScanner({ event_id }: { event_id: number | undefine
     });
   };
 
+  const reactivateWalletTicket = () => {
+    if (!walletTicket?.user_id) return;
+    setLoading(true);
+    supabase.rpc('remove_wallet_tickets_used_at', { req_user_id: walletTicket.user_id, wallet_tickets_id: walletTicket.id })
+    .then(({ data: removed }) => {
+      if (!removed) return;
+      setTicketUsedAt(null);
+      setLoading(false);
+    });
+  };
+
+  const onNewScan = () => {
+    setScannedId(null);
+    setWalletTicket(null);
+    setTicketUsedAt(null);
+    setTicketUsedTimeAgo(null);
+  };
+
   return (
     <div className="scannerContainer">
-      <Scanner
-        formats={['qr_code']}
-        allowMultiple={false}
-        onScan={handleScan}
-        onError={handleError}
-        styles={{
-          finderBorder: 0,
-          container: {
-            width: '90%',
-            height: '90%'
-          },
-          video: {
-            borderRadius: '10px'
-          }
-        }}
-      />
-      {scannedId != null ?
-        <div className="scannedContainer">
-          <h2>Ticket escanejat!</h2>
+      {scannedId != null ? <>
+        <div className="scannedTicketContainer" style={{ backgroundColor: ticketUsedAt ? '#ff3737' : '#3fde7a' }}>
           { !walletTicket ?
             <ActivityIndicator />
-          :
-            <div className="walletTicketInfoContainer">
-              <div>
-                <p>{walletTicket.event_tickets_name}</p>
-                <p>Ticket Nº: {walletTicket.id}</p>
-                <p>Ordre: {walletTicket.order_id}</p>
-                <p>Preu: {walletTicket.price/100}€</p>
-                <p>Estat: {ticketUsedAt ? 'DESACTIVAT fa ' + ticketUsedTimeAgo : 'ACTIU'}</p>
+          : 
+            <div className="scannedTicketInfoContainer">
+              <h2>{walletTicket.event_tickets_name}</h2>
+              <div className="scannedTicketInfo">
+                <p>Ticket nº: {walletTicket.id}</p>
+                <p>Order ID: {walletTicket.order_id}</p>
+                <p>{ i18n?.t('price') }: {walletTicket.price/100}€</p>
               </div>
-              { !ticketUsedAt ?
-                <button
-                  disabled={false}
-                  className="button"
-                  onClick={deactivateWalletTicket}
-                >
-                  <span className="buttonText">Desactivar</span>
-                </button>
-              : null }
             </div>
           }
         </div>
-      :
+        <div className="scannedActionsContainer">
+          { walletTicket ? <>
+            <button
+              className="button newScanButton"
+              onClick={onNewScan}
+            >
+              <img src={Camera} alt="camera" className="icon" />
+              <span className="buttonText">{ i18n?.t('newScan') }</span>
+            </button>
+            <div className="scannedTicketStatusContainer">
+              <div className="scannedTicketStatus">
+                <h2>{ticketUsedAt ? i18n?.t('deactivated') : i18n?.t('active')}</h2>
+                { ticketUsedAt ?
+                  <p>{ticketUsedTimeAgo}</p>
+                : null }
+              </div>
+              <button
+                disabled={loading || !!ticketUsedAt}
+                className="button"
+                onClick={deactivateWalletTicket}
+              >
+                <span className="buttonText">{ i18n?.t('deactivate') }</span>
+              </button>
+              <button
+                disabled={loading || !ticketUsedAt}
+                className="button reactivateButton"
+                onClick={reactivateWalletTicket}
+              >
+                <span className="buttonText">{ i18n?.t('reactivate') }</span>
+              </button>
+            </div>
+          </> : null }
+        </div>
+      </> : <>
+        <Scanner
+          formats={['qr_code']}
+          allowMultiple={false}
+          onScan={handleScan}
+          onError={handleError}
+          styles={{
+            finderBorder: 0,
+            container: {
+              width: '90%',
+              height: '90%',
+              maxWidth: '400px',
+              marginTop: '35px',
+              marginBottom: '20px'
+            },
+            video: {
+              borderRadius: '10px'
+            }
+          }}
+        />
         <div className="scanningContainer">
           <h2>{ i18n?.t('scanningTicket') }</h2>
           <div className="loaderDots"></div>
         </div>
-      }
+      </> }
     </div>
   );
 }

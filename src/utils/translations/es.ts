@@ -45,5 +45,10 @@ export const es: { [key: string]: string } = {
   quantityUsed: 'Utilizados',
   total: 'Total',
   expired: 'Caducado',
-  scanningTicket: 'Escaneando ticket'
+  scanningTicket: 'Escaneando ticket',
+  active: 'Ticket ACTIVO',
+  deactivated: 'Ticket DESACTIVADO hace',
+  newScan: 'Nuevo escaneo',
+  deactivate: 'Desactivar',
+  reactivate: 'Reactivar'
 };
