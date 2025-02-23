@@ -46,8 +46,10 @@ const TicketsTable: React.FC<TicketsTableProps> = ({
             <tbody>
               <tr className="user-row">
                 <td colSpan={4}>
-                  {userData.user_fullname}
-                  <br/>
+                  {userData.user_fullname && <>
+                    {userData.user_fullname}
+                    <br/>
+                  </>}
                   {userData.user_email}
                 </td>
               </tr>
